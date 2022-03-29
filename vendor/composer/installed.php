@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'v9.1.2',
-        'version' => '9.1.2.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '0e776e9eccc0be8047430a2b9e4ea57dd0a86f8f',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -17,6 +17,26 @@
             'install_path' => __DIR__ . '/../brick/math',
             'aliases' => array(),
             'reference' => 'ca57d18f028f84f777b2168cd1911b0dee2343ae',
+            'dev_requirement' => false,
+        ),
+        'cartalyst/sentinel' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cartalyst/sentinel',
+            'aliases' => array(
+                0 => '6.0.x-dev',
+            ),
+            'reference' => '5bfa6084942ad67435ea014de3aca87bbf32265f',
+            'dev_requirement' => false,
+        ),
+        'cartalyst/support' => array(
+            'pretty_version' => 'v6.0.0',
+            'version' => '6.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cartalyst/support',
+            'aliases' => array(),
+            'reference' => 'd7655de92345e24c1474aa31ec88849ae86fb7a2',
             'dev_requirement' => false,
         ),
         'cordoval/hamcrest-php' => array(
@@ -374,12 +394,12 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'v9.1.2',
-            'version' => '9.1.2.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '0e776e9eccc0be8047430a2b9e4ea57dd0a86f8f',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -736,8 +756,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
