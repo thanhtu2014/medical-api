@@ -94,15 +94,38 @@ class MigrationCartalystSentinel extends Migration
             $table->index('user_id');
         });
 
+        // Schema::create('users', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('type');
+        //     $table->string('email');
+        //     $table->string('password');
+        //     $table->text('permissions')->nullable();
+        //     $table->timestamp('last_login')->nullable();
+        //     $table->string('first_name')->nullable();
+        //     $table->string('last_name')->nullable();
+        //     $table->timestamps();
+
+        //     $table->engine = 'InnoDB';
+        //     $table->unique('email');
+        // });
+
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('email');
-            $table->string('password');
-            $table->text('permissions')->nullable();
-            $table->timestamp('last_login')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->timestamps();
+            $table->id();
+            $table->string('type', 24);
+            $table->string('email', 255);
+            $table->string('name', 128);
+            $table->string('password', 1024);
+            $table->string('key', 1024);
+            $table->string('token', 1024);
+            $table->dateTime('expired', $precision = 0)->nullable();
+            $table->string('plan', 24);
+            $table->string('code', 6)->nullable();
+            $table->string('status', 24);
+            $table->char('chg', 1)->default('Y');
+            $table->string('new_by', 128);
+            $table->dateTime('new_ts', $precision = 0)->useCurrent();
+            $table->string('upd_by', 128)->default(null);
+            $table->dateTime('upd_ts', $precision = 0)->default(null);
 
             $table->engine = 'InnoDB';
             $table->unique('email');
