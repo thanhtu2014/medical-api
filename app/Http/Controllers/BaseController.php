@@ -2,49 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Response;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class BaseController extends Controller
 {
-    public function error($error, $code = 404)
+    /**
+     * success response method.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendResponse($result, $message)
     {
-        return Response::json([
+    	$response = [
+            'success' => true,
+            'access_token' => $result,
+            'token_type' => 'Bearer',
+            'status_code' => 200
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    /**
+     * return error response.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendError($error, $errorMessages = [], $code = 404)
+    {
+    	$response = [
             'success' => false,
             'message' => $error,
-        ], $code);
-    }
+            'status_code' => $code,
+        ];
 
-    public function success($message, $data = NULL, $code = 200)
-    {
-        return Response::json([
-            'success' => true,
-            'message' => $message,
-            'data' => $data,
-        ], $code);
-    }
-
-    public function successWithPaginate($message, $pagination = NULL, $resourceCollection, $code = 200)
-    {
-        // Re format pagination struct
-        $data = null;
-        $resourceCollectionInstance = "\\App\\Http\\Resources\\API\\V1\\$resourceCollection";
-        if ($pagination instanceof \Illuminate\Pagination\LengthAwarePaginator) {
-            $data = [
-                'current_page' => (int) $pagination->currentPage(),
-                'per_page' => (int) $pagination->perPage(),
-                'last_page' => (int) $pagination->lastPage(),
-                'total' => (int) $pagination->total(),
-                'prev_page_url' => $pagination->previousPageUrl(),
-                'next_page_url' => $pagination->nextPageUrl(),
-                'items' => new $resourceCollectionInstance($pagination->items()),
-            ];
+        if(!empty($errorMessages)){
+            $response['data'] = $errorMessages;
         }
 
-        return Response::json([
-            'success' => true,
-            'message' => $message,
-            'data' => $data,
-        ], $code);
+        return response()->json($response, $code);
     }
 }

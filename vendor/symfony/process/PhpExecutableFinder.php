@@ -28,8 +28,10 @@ class PhpExecutableFinder
 
     /**
      * Finds The PHP executable.
+     *
+     * @return string|false
      */
-    public function find(bool $includeArgs = true): string|false
+    public function find(bool $includeArgs = true)
     {
         if ($php = getenv('PHP_BINARY')) {
             if (!is_executable($php)) {
@@ -41,6 +43,10 @@ class PhpExecutableFinder
                 } else {
                     return false;
                 }
+            }
+
+            if (@is_dir($php)) {
+                return false;
             }
 
             return $php;
@@ -55,7 +61,7 @@ class PhpExecutableFinder
         }
 
         if ($php = getenv('PHP_PATH')) {
-            if (!@is_executable($php)) {
+            if (!@is_executable($php) || @is_dir($php)) {
                 return false;
             }
 
@@ -63,12 +69,12 @@ class PhpExecutableFinder
         }
 
         if ($php = getenv('PHP_PEAR_PHP_BIN')) {
-            if (@is_executable($php)) {
+            if (@is_executable($php) && !@is_dir($php)) {
                 return $php;
             }
         }
 
-        if (@is_executable($php = \PHP_BINDIR.('\\' === \DIRECTORY_SEPARATOR ? '\\php.exe' : '/php'))) {
+        if (@is_executable($php = \PHP_BINDIR.('\\' === \DIRECTORY_SEPARATOR ? '\\php.exe' : '/php')) && !@is_dir($php)) {
             return $php;
         }
 
@@ -82,8 +88,10 @@ class PhpExecutableFinder
 
     /**
      * Finds the PHP executable arguments.
+     *
+     * @return array
      */
-    public function findArguments(): array
+    public function findArguments()
     {
         $arguments = [];
         if ('phpdbg' === \PHP_SAPI) {
