@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\V1\Auth\AuthController;
+use App\Http\Controllers\V1\Auth\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
 
         Route::post('/login', [AuthController::class, 'login'])->name('login.api');
         Route::post('/signup', [AuthController::class, 'signup'])->name('signup.api');
+
+        Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+        Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
     });
 
     Route::middleware('auth:api')->group(function () {
