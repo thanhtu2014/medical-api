@@ -17,6 +17,11 @@ class UserRepository implements UserRepositoryInterface
         return User::where('email', $email)->first();
     }
 
+    public function getUserByGoogleId($googleId)
+    {
+        return User::where('google_id', $googleId)->first();
+    }
+
     public function delete($id)
     {
         User::destroy($id);

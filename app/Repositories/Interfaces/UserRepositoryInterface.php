@@ -8,6 +8,8 @@ interface UserRepositoryInterface
 
     public function getUserByEmail($email);
 
+    public function getUserByGoogleId($googleId);
+
     public function delete($id);
 
     public function create(array $orderDetails);
