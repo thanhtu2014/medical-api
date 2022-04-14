@@ -5,36 +5,38 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\Interfaces\HospitalRepositoryInterface;
+use App\Repositories\Interfaces\PeopleRepositoryInterface;
 use App\Http\Requests\V1\HospitalRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
 
-class HospitalController extends BaseController
+class PeopleController extends BaseController
 {
     /**
-     * @var HospitalRepositoryInterface
+     * @var PeopleRepositoryInterface
      */
-    protected $hospitalRepository;
+    protected $peopleRepository;
 
     /**
-     * HospitalController constructor.
-     * @param HospitalRepositoryInterface $hospitalRepository
+     * PeopleController constructor.
+     * @param PeopleRepositoryInterface $peopleRepository
      */
-    public function __construct(HospitalRepositoryInterface $hospitalRepository) 
+    public function __construct(PeopleRepositoryInterface $peopleRepository) 
     {
-        $this->hospitalRepository = $hospitalRepository;
+        $this->peopleRepository = $peopleRepository;
     }
 
     /**
      * @param null
      */
-    public function index() 
+    public function index()
     {
         try {
-            $hospitals = $this->hospitalRepository->getAll();
+            $currentType = get_current_action_view_type();
+            
+            $people = $this->peopleRepository->getPeopleListByType($currentType);
 
-            return $this->sendResponse($hospitals, 'Get hospital list successfully.');
+            return $this->sendResponse($people, 'Get people list successfully.');
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
@@ -44,13 +46,15 @@ class HospitalController extends BaseController
     /**
      * @param Request $request
      */
-    public function detail($id) 
+    public function detail($id)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($id);
+            $currentType = get_current_action_view_type();
 
-            if($hospital) {
-                return $this->sendResponse($hospital, 'Get hospital detail successfully.');
+            $people = $this->peopleRepository->getDetail($id, $currentType);
+
+            if($people) {
+                return $this->sendResponse($people, 'Get people detail successfully.');
             }
 
             return $this->sendError("Not found!", 404);
@@ -74,7 +78,7 @@ class HospitalController extends BaseController
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $hospital = $this->hospitalRepository->create($input);
+            $hospital = $this->peopleRepository->create($input);
 
             if($hospital) {
                 return $this->sendResponse($hospital, 'Create hospital successfully.');
@@ -92,7 +96,7 @@ class HospitalController extends BaseController
     public function update(HospitalRequest $request)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($request->id);
+            $hospital = $this->peopleRepository->getDetail($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
@@ -104,7 +108,7 @@ class HospitalController extends BaseController
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $hospital = $this->hospitalRepository->update($request->id, $input);
+            $hospital = $this->peopleRepository->update($request->id, $input);
 
             if($hospital) {
                 return $this->sendResponse($hospital, 'Update hospital successfully.');
@@ -122,13 +126,13 @@ class HospitalController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($request->id);
+            $hospital = $this->peopleRepository->getDetail($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
             }
 
-            $this->hospitalRepository->delete($request->id);
+            $this->peopleRepository->delete($request->id);
 
             return $this->sendResponse([], 'Delete hospital successfully.');
 

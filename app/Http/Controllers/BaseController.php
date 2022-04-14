@@ -55,10 +55,6 @@ class BaseController extends Controller
             'status_code' => $code,
         ];
 
-        if(!empty($errorMessages)){
-            $response['data'] = $errorMessages;
-        }
-
         return response()->json($response, $code);
     }
 }

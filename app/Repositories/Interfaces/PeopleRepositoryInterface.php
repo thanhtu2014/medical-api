@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Interfaces;
 
-interface HospitalRepositoryInterface
+interface PeopleRepositoryInterface
 {
-    public function getAll();
+    public function getPeopleListByType($type);
 
-    public function getDetail($id);
+    public function getDetail($id, $type);
 
     public function create(array $data);
 

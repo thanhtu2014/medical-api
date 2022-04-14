@@ -17,14 +17,14 @@ class HospitalRepository implements HospitalRepositoryInterface
         return Hospital::where('id', $id)->first();
     }
 
-    public function create(array $hospitalDetails)
+    public function create(array $data)
     {
-        return Hospital::create($hospitalDetails);
+        return Hospital::create($data);
     }
 
-    public function update($id, array $newData)
+    public function update($id, array $data)
     {
-        return Hospital::whereId($id)->update($newData);
+        return Hospital::whereId($id)->update($data);
     }
 
     public function delete($id)
