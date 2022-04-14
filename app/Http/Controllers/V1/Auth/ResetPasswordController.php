@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ResetPasswordController extends Controller
+class ResetPasswordController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------

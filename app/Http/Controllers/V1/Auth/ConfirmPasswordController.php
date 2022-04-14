@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\V1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ConfirmsPasswords;
 
-class ConfirmPasswordController extends Controller
+class ConfirmPasswordController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------

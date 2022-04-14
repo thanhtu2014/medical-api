@@ -18,4 +18,4 @@ Route::get('/', function (Request $request) {
     return 'PONG';
 });
 
-include("V1/auth.php"); 
+include("V1/app.php");

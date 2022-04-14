@@ -13,21 +13,32 @@ use Carbon\Carbon;
 
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Http\Requests\V1\UserSignupRequest;
-use App\Repositories\Eloquent\UserRepository;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class AuthController extends BaseController
 {
-    private $userRepository;
 
-    public function __construct( UserRepository $userRepository ) 
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
+    /**
+     * AuthController constructor.
+     * @param UserRepository $userRepository
+     */
+    public function __construct( UserRepositoryInterface $userRepository ) 
     {
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param UserSignupRequest $request
+     */
     public function signup(UserSignupRequest $request) 
     {
         try {
-            $input = $request->validated();
+            $request->validated();
 
             // Check user exist
             $user = $this->userRepository->getUserByEmail($input['email']);
@@ -52,7 +63,7 @@ class AuthController extends BaseController
             //Update tokens
             $this->userRepository->update($user->id, ['token' => $success]);
     
-            return $this->sendResponse($success, 'User register successfully.');
+            return $this->sendResponseGetToken($success, 'User register successfully.');
 
         } catch(Exception $error) {
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
@@ -62,13 +73,13 @@ class AuthController extends BaseController
     public function login(UserLoginRequest $request) 
     {
         try {
-            $input = $request->validated();
+            $request->validated();
 
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
                 $user = Auth::user(); 
                 $success = $user->createToken('Personal Access Token')->plainTextToken;
 
-                return $this->sendResponse($success, 'User login successfully.');
+                return $this->sendResponseGetToken($success, 'User login successfully.');
             } 
             else{ 
                 return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
@@ -82,6 +93,6 @@ class AuthController extends BaseController
     {
         Auth::user()->token()->delete();
         $response = ['message' => 'You have been successfully logged out!'];
-        return $this->sendResponse($response, 200);
+        return $this->sendResponseGetToken($response, 200);
     }
 }

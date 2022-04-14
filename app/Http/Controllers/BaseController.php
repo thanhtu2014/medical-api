@@ -13,12 +13,29 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message)
+    public function sendResponseGetToken($result, $message)
     {
     	$response = [
             'success' => true,
             'access_token' => $result,
             'token_type' => 'Bearer',
+            'status_code' => 200
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    /**
+     * success response method.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendResponse($result, $message)
+    {
+    	$response = [
+            'success' => true,
+            'data' => $result,
+            'message' => $message,
             'status_code' => 200
         ];
 
