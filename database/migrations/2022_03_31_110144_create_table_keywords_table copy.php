@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('keywords', function (Blueprint $table) {
+        Schema::create('media_x_keyword', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type', 24);
-            $table->string('name', 128);
-            $table->string('color', 6);
-            $table->string('user', 128)->nullable()->default(null);
-            $table->string('vx01', 128)->nullable()->default(null);
-            $table->string('vx02', 128)->nullable()->default(null);
-            $table->string('remark', 1024)->nullable()->default(null);
+            $table->integer('keyword')->unsigned();
+            $table->string('fpath', 1024)->nullable();
+            $table->string('fname', 128)->nullable();
+            $table->string('fdisk', 1024)->nullable();
+            $table->string('vname', 1024)->nullable();
+            $table->string('mime', 128)->nullable();
+            $table->string('fext', 24)->nullable();
             $table->char('chg', 1)->default('Y');
             $table->string('new_by', 128);
             $table->dateTime('new_ts', $precision = 0)->useCurrent();
@@ -29,6 +29,10 @@ return new class extends Migration
             $table->dateTime('upd_ts', $precision = 0)->default(null);
 
             $table->engine = 'InnoDB';
+        });
+
+        Schema::table('media_x_keyword', function($table) {
+            $table->foreign('keyword')->references('id')->on('keywords');
         });
     }
 
@@ -39,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keywords');
+        Schema::dropIfExists('media_x_keyword');
     }
 };

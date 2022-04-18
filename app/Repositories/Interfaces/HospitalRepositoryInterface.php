@@ -4,9 +4,9 @@ namespace App\Repositories\Interfaces;
 
 interface HospitalRepositoryInterface
 {
-    public function getAll();
+    public function getHospitalListByType($type);
 
-    public function getDetail($id);
+    public function getDetail($id, $type);
 
     public function create(array $data);
 

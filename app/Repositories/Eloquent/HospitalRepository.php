@@ -3,18 +3,19 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\HospitalRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Hospital;
 
 class HospitalRepository implements HospitalRepositoryInterface
 {
-    public function getAll()
+    public function getHospitalListByType($type)
     {
-        return Hospital::all();
+        return Hospital::where(['type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
-    public function getDetail($id)
+    public function getDetail($id, $type)
     {
-        return Hospital::where('id', $id)->first();
+        return Hospital::where(['id' => $id, 'type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function create(array $data)
@@ -29,6 +30,6 @@ class HospitalRepository implements HospitalRepositoryInterface
 
     public function delete($id)
     {
-        Hospital::destroy($id);
+        Hospital::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
     }
 }

@@ -3,18 +3,19 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use App\Models\KeyWord;
 
 class KeyWordRepository implements KeyWordRepositoryInterface
 {
-    public function getAll($type)
+    public function getListByType($type)
     {
-        return KeyWord::where(['type', $type])->get();
+        return KeyWord::where(['type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
-    public function getDetail($id)
+    public function getDetail($id, $type)
     {
-        return KeyWord::where('id', $id)->first();
+        return KeyWord::where(['id' => $id, 'type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function create(array $data)
@@ -29,6 +30,6 @@ class KeyWordRepository implements KeyWordRepositoryInterface
 
     public function delete($id)
     {
-        KeyWord::destroy($id);
+        KeyWord::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
     }
 }

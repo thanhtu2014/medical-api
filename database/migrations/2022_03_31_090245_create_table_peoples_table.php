@@ -17,14 +17,15 @@ return new class extends Migration
             $table->increments('id');
             $table->string('type', 24);
             $table->integer('org')->nullable()->default(null);
+            $table->integer('dept', 128)->nullable()->default(null);
             $table->string('name', 128);
-            $table->string('user', 128)->nullable()->default(null);
+            $table->string('user', 128);
             $table->string('post', 8)->nullable()->default(null);
             $table->string('pref', 24)->nullable()->default(null);
             $table->string('pref_code', 24)->nullable()->default(null);
             $table->string('address', 1024)->nullable()->default(null);
             $table->string('xaddress', 1024)->nullable()->default(null);
-            $table->string('note', 1024)->nullable()->default(null);
+            $table->string('remark', 1024)->nullable()->default(null);
             $table->string('phone', 128)->nullable()->default(null);
             $table->string('mail', 255)->nullable()->default(null);
             $table->char('chg', 1)->default('Y');

@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\Auth\AuthController;
 use App\Http\Controllers\V1\HospitalController;
 use App\Http\Controllers\V1\PeopleController;
-use App\Http\Controllers\V1\KeyWorkController;
+use App\Http\Controllers\V1\KeyWordController;
+use App\Http\Controllers\V1\Auth\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +55,11 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/family/{id}', [PeopleController::class, 'delete'])->name('family.delete.api');
 
         // MEDICINE APIs
-        Route::get('/medicines', [KeyWorkController::class, 'index'])->name('medicines.api');
-        Route::post('/medicines', [KeyWorkController::class, 'store'])->name('medicines.store.api');
-        Route::get('/medicines/{id}', [KeyWorkController::class, 'getHospitalDetail'])->name('medicines.detail.api');
-        Route::put('/medicines/{id}', [KeyWorkController::class, 'update'])->name('medicines.update.api');
-        Route::delete('/medicines/{id}', [KeyWorkController::class, 'delete'])->name('medicines.delete.api');
+        Route::get('/medicines', [KeyWordController::class, 'index'])->name('medicines.api');
+        Route::post('/medicines', [KeyWordController::class, 'store'])->name('medicines.store.api');
+        Route::get('/medicines/{id}', [KeyWordController::class, 'detail'])->name('medicines.detail.api');
+        Route::put('/medicines/{id}', [KeyWordController::class, 'update'])->name('medicines.update.api');
+        Route::delete('/medicines/{id}', [KeyWordController::class, 'delete'])->name('medicines.delete.api');
         
     });
 

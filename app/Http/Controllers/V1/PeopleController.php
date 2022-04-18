@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\PeopleRepositoryInterface;
-use App\Http\Requests\V1\HospitalRequest;
+use App\Http\Requests\V1\PeopleRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
 
@@ -18,12 +18,18 @@ class PeopleController extends BaseController
     protected $peopleRepository;
 
     /**
+     * @var type
+     */
+    private $type;
+
+    /**
      * PeopleController constructor.
      * @param PeopleRepositoryInterface $peopleRepository
      */
     public function __construct(PeopleRepositoryInterface $peopleRepository) 
     {
         $this->peopleRepository = $peopleRepository;
+        $this->type = get_current_action_view_type();
     }
 
     /**
@@ -32,9 +38,7 @@ class PeopleController extends BaseController
     public function index()
     {
         try {
-            $currentType = get_current_action_view_type();
-            
-            $people = $this->peopleRepository->getPeopleListByType($currentType);
+            $people = $this->peopleRepository->getListByType($this->type);
 
             return $this->sendResponse($people, 'Get people list successfully.');
         } catch (\Exception $e) {
@@ -49,9 +53,7 @@ class PeopleController extends BaseController
     public function detail($id)
     {
         try {
-            $currentType = get_current_action_view_type();
-
-            $people = $this->peopleRepository->getDetail($id, $currentType);
+            $people = $this->peopleRepository->getDetail($id, $this->type);
 
             if($people) {
                 return $this->sendResponse($people, 'Get people detail successfully.');
@@ -65,23 +67,24 @@ class PeopleController extends BaseController
     }
 
     /**
-     *  @param HospitalRequest $request
+     *  @param PeopleRequest $request
      */
-    public function store(HospitalRequest $request)
+    public function store(PeopleRequest $request)
     {
         try {
             $request->validated();
 
             $input = $request->all();
-            $input['type'] = HOSPITAL_TYPE_VALUE;
+            $input['type'] = get_current_action_view_type();
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $hospital = $this->peopleRepository->create($input);
+            $doctor = $this->peopleRepository->create($input);
 
-            if($hospital) {
-                return $this->sendResponse($hospital, 'Create hospital successfully.');
+            if($doctor) {
+                return $this->sendResponse($doctor, 'Create doctor/family successfully.');
             }
 
         } catch (\Exception $e) {
@@ -91,9 +94,9 @@ class PeopleController extends BaseController
     }
 
     /**
-     *  @param HospitalRequest $request
+     *  @param PeopleRequest $request
      */
-    public function update(HospitalRequest $request)
+    public function update(PeopleRequest $request)
     {
         try {
             $hospital = $this->peopleRepository->getDetail($request->id);
@@ -126,15 +129,16 @@ class PeopleController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->peopleRepository->getDetail($request->id);
+            $currentType = get_current_action_view_type();
+            $people = $this->peopleRepository->getDetail($request->id, $this->type);
 
-            if(!$hospital) {
-                return $this->sendError("Hospital not found with ID : $request->id!", 404);
+            if(!$people) {
+                return $this->sendError("Doctor/Family not found with ID : $request->id!", 404);
             }
 
             $this->peopleRepository->delete($request->id);
 
-            return $this->sendResponse([], 'Delete hospital successfully.');
+            return $this->sendResponse([], 'Delete Doctor/Family successfully.');
 
         } catch (\Exception $e) {
             throw $e;

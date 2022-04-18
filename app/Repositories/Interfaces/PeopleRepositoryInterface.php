@@ -4,7 +4,7 @@ namespace App\Repositories\Interfaces;
 
 interface PeopleRepositoryInterface
 {
-    public function getPeopleListByType($type);
+    public function getListByType($type);
 
     public function getDetail($id, $type);
 

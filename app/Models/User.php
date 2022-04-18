@@ -36,6 +36,7 @@ class User extends Authenticatable
         'status',
         'chg',
         'new_by',
+        'new_ts',
         'upd_by',
         'upd_ts',
         'google_id'

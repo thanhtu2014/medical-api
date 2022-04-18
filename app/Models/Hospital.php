@@ -24,11 +24,12 @@ class Hospital extends Authenticatable
         'pref_code',
         'address',
         'xaddress',
-        'note',
+        'remark',
         'phone',
         'mail',
         'chg',
         'new_by',
+        'new_ts',
         'upd_by',
         'upd_ts',
         'google_id'

@@ -9,6 +9,10 @@ use App\Repositories\Eloquent\HospitalRepository;
 use App\Repositories\Interfaces\HospitalRepositoryInterface;
 use App\Repositories\Eloquent\PeopleRepository;
 use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use App\Repositories\Eloquent\KeyWordRepository;
+use App\Repositories\Interfaces\KeyWordRepositoryInterface;
+use App\Repositories\Eloquent\MediaKeyWordRepository;
+use App\MediaRepositories\Interfaces\MediaKeyWordRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +36,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PeopleRepositoryInterface::class,
             PeopleRepository::class
+        );
+
+        $this->app->bind(
+            KeyWordRepositoryInterface::class,
+            KeyWordRepository::class
+        );
+
+        $this->app->bind(
+            MediaKeyWordRepositoryInterface::class,
+            MediaKeyWordRepository::class
         );
     }
 

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class People extends Authenticatable
+class MediaKeyWord extends Authenticatable
 {
-    protected $table = 'peoples';
+    protected $table = 'media_x_keyword';
 
     public $timestamps = false;
 
@@ -16,26 +16,18 @@ class People extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'type',
-        'org',
-        'dept',
-        'name',
-        'doctor',
-        'user',
-        'post',
-        'pref',
-        'pref_code',
-        'address',
-        'xaddress',
-        'remark',
-        'phone',
-        'mail',
+        'keyword',
+        'fpath',
+        'fname',
+        'fname',
+        'vname',
+        'mime',
+        'fext',
         'chg',
         'new_by',
         'new_ts',
         'upd_by',
-        'upd_ts',
-        'google_id'
+        'upd_ts'
     ];
 
     /**
