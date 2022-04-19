@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 if (!function_exists('get_current_action_view_type')) {
     /**
@@ -46,5 +47,21 @@ if (!function_exists('get_current_action_view_type')) {
         }
 
         return $type;
+    }
+}
+
+if (!function_exists('generate_unique_code')) {
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    function generate_unique_code()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (User::where("code", "=", $code)->first());
+  
+        return $code;
     }
 }

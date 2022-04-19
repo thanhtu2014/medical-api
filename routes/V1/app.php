@@ -8,7 +8,7 @@ use App\Http\Controllers\V1\HospitalController;
 use App\Http\Controllers\V1\PeopleController;
 use App\Http\Controllers\V1\KeyWordController;
 use App\Http\Controllers\V1\Auth\GoogleController;
-
+use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,9 +29,14 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
         Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+        Route::post('/register', [AuthController::class, 'register'])->name('register.api');
+        Route::post('/confirm-code', [AuthController::class, 'confirmCode'])->name('confirm.code.api');
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // CHANGE PASSWORD
+        Route::post('/change-password', [ConfirmPasswordController::class, 'index'])->name('change.password.api');
 
         // HOSPITAL APIs
         Route::get('/hospitals', [HospitalController::class, 'index'])->name('hospitals.api');

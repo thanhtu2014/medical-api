@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('type', 24);
             $table->integer('org')->nullable()->default(null);
-            $table->integer('dept', 128)->nullable()->default(null);
+            $table->string('dept', 128)->nullable()->default(null);
             $table->string('name', 128);
             $table->string('user', 128);
             $table->string('post', 8)->nullable()->default(null);

@@ -6,7 +6,11 @@ interface UserRepositoryInterface
 {
     public function getAllUsers();
 
+    public function getUserById($id);
+
     public function getUserByEmail($email);
+
+    public function getUserByCode($code);
 
     public function getUserByGoogleId($googleId);
 

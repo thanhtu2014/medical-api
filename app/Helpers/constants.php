@@ -12,6 +12,20 @@ define('MEDICAL_CONDITION_KEY_VALUE', 'X025X021');//medical condition
 define('MEDICINE_KEY_VALUE', 'X00900');//medicine
 define('IMPORTANT_WORD_KEY_VALUE', 'X00721');//important word
 
+define('USER_WAITING_STATUS_KEY_VALUE', 'X52000');//waiting
+define('USER_AUTHENTICATED_STATUS_KEY_VALUE', 'X52002');//authenticated
+define('USER_DELETED_STATUS_KEY_VALUE', 'X5200A');//deleted
+
 define('CHG_VALID_VALUE', 'Y');
 define('CHG_INVALID_VALUE', 'N');
 define('CHG_DELETE_VALUE', 'D');
+
+define('PASSWORD_DEFAULT_VALUE', '12345678');
+define('NEW_USER_DEFAULT_VALUE', 'app_init');
+define('USER_NAME_DEFAULT_VALUE', 'New user');
+
+define('FREE_PLAN_VALUE', 'FREE');
+define('VIP_PLAN_VALUE', 'VIP');
+
+define('LOGIN_MAIL_TYPE_VALUE', 'Mail');
+define('LOGIN_GOOGLE_TYPE_VALUE', 'Google');
