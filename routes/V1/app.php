@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\Auth\AuthController;
 use App\Http\Controllers\V1\HospitalController;
 use App\Http\Controllers\V1\PeopleController;
+use App\Http\Controllers\V1\FolderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,15 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/family/{id}', [PeopleController::class, 'getHospitalDetail'])->name('family.detail.api');
         Route::put('/family/{id}', [PeopleController::class, 'update'])->name('family.update.api');
         Route::delete('/family/{id}', [PeopleController::class, 'delete'])->name('family.delete.api');
+
+        // FOLDER APIs
+        Route::get('/folders', [FolderController::class, 'index'])->name('folders.api');
+        Route::post('/folders', [FolderController::class, 'store'])->name('folders.store.api');
+        Route::get('/folders/{id}', [FolderController::class, 'getFolderDetail'])->name('folders.getFolderDetail.api');
+        Route::put('/folders/{id}', [FolderController::class, 'update'])->name('folders.update.api');
+        Route::delete('/folders/{id}', [FolderController::class, 'delete'])->name('folders.delete.api');
+        Route::post('/folders/{id}/create', [FolderController::class, 'createFolder'])->name('folders.createFolder.api');
+        Route::post('/folders/{id}/list', [FolderController::class, 'listFolder'])->name('folders.listFolder.api');
         
     });
 
