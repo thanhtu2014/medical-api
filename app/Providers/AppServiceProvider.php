@@ -12,7 +12,7 @@ use App\Repositories\Interfaces\PeopleRepositoryInterface;
 use App\Repositories\Eloquent\KeyWordRepository;
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
 use App\Repositories\Eloquent\MediaKeyWordRepository;
-use App\MediaRepositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {

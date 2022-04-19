@@ -19,7 +19,7 @@ class MediaKeyWord extends Authenticatable
         'keyword',
         'fpath',
         'fname',
-        'fname',
+        'fdisk',
         'vname',
         'mime',
         'fext',

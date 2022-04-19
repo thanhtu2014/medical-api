@@ -24,9 +24,9 @@ class KeyWordRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'name' => 'min:3|max:128',
             'type' => 'min:3|max:24',
-            'name' => 'required|min:3|max:128',
             'color' => 'max:128',
             'user' => 'max:128',
             'vx01' => 'max:128',

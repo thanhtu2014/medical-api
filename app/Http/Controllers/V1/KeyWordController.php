@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
 use App\Http\Requests\V1\KeyWordRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
+use DB;
 
 class KeyWordController extends BaseController
 {
@@ -19,6 +20,11 @@ class KeyWordController extends BaseController
     private $keyWordRepository;
 
     /**
+     * @var MediaKeyWordRepositoryInterface
+     */
+    private $mediaKeyWordRepository;
+
+    /**
      * @var type
      */
     private $type;
@@ -26,10 +32,14 @@ class KeyWordController extends BaseController
     /**
      * KeyWordController constructor.
      * @param KeyWordRepositoryInterface $keyWordRepository
+     * @param MediaKeyWordRepositoryInterface $mediaKeyWordRepository
      */
-    public function __construct(KeyWordRepositoryInterface $keyWordRepository) 
-    {
+    public function __construct(
+        KeyWordRepositoryInterface $keyWordRepository,
+        MediaKeyWordRepositoryInterface $mediaKeyWordRepository
+    ) {
         $this->keyWordRepository = $keyWordRepository;
+        $this->mediaKeyWordRepository = $mediaKeyWordRepository;
         $this->type = get_current_action_view_type();
     }
 
@@ -72,6 +82,8 @@ class KeyWordController extends BaseController
      */
     public function store(KeyWordRequest $request)
     {
+        dd($request->file('image'));
+        DB::beginTransaction();
         try {
             $request->validated();
 
@@ -82,17 +94,28 @@ class KeyWordController extends BaseController
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $keyWord = $this->keyWordRepository->create($input);
+            dd($request->file('file'));
 
-            if($hospital) {
-                $mediaKeyWord = $this->keyWordRepository->create($input);
-            }
+            // $keyWord = $this->keyWordRepository->create($input);
 
-            if($hospital) {
-                return $this->sendResponse($hospital, 'Create hospital successfully.');
-            }
+            // if($keyWord) {
+            //     $files = $request->file('fileName');
+            //     $name = $files->getClientOriginalName();
+            //     $path = $files->store('storage/app/public/medicines');
 
+            //     $input_media['keyword'] = $keyWord->id;
+            //     $input_media['fpath'] = $path;
+            //     $input_media['fname'] = $name;
+            //     $mediaKeyWord = $this->mediaKeyWordRepository->create($input_media);
+            // }
+
+            // if($mediaKeyWord) {
+            //     return $this->sendResponse($hospital, 'Create hospital successfully.');
+            // }
+
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             throw $e;
             return $this->sendError("Something when wrong!", 500);
         }
