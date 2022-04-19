@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 use Mail;
+use DB;
 
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Http\Requests\V1\UserSignupRequest;
@@ -79,7 +80,8 @@ class AuthController extends BaseController
             $request->validated();
 
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
-                $user = Auth::user(); 
+                $user = Auth::user();
+                dd($user);
                 $success = $user->createToken('Personal Access Token')->plainTextToken;
 
                 return $this->sendResponseGetToken($success, 'User login successfully.');
@@ -94,6 +96,7 @@ class AuthController extends BaseController
 
     public function register(SendMailRequest $request) 
     {
+        DB::beginTransaction();
         try {
             $request->validated();
             $code = generate_unique_code();
@@ -123,8 +126,10 @@ class AuthController extends BaseController
                 }
             }
 
+            DB::commit();
             return $this->sendResponse($user, 'Send Mail successfully.');
         } catch(Exception $error) {
+            DB::rollBack();
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
         }
     }
