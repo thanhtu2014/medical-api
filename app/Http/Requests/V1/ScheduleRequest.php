@@ -26,6 +26,7 @@ class ScheduleRequest extends BaseAPIRequest
         return [
             'title' => 'required|min:3|max:128',
             'date' => 'required',
+            'color'=> 'required|min:3|max:6',
             'hospital' => 'required',
             'people' => 'required',
             'remark' => 'min:3|max:1024',
@@ -37,6 +38,7 @@ class ScheduleRequest extends BaseAPIRequest
         return [
             'title.required' => 'Title is required!',
             'date.required' => 'DateTime is required!',
+            'color.required' => 'Color is required!',
             'hospital.required' => 'Hospital is required!',
             'people.required' => 'Doctor is required!',
             'remark.min' => 'Note must be at least 3 characters!',

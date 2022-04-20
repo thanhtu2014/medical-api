@@ -11,6 +11,7 @@ define('KEY_WORD_KEY_VALUE', 'X36760');//keyword
 define('MEDICAL_CONDITION_KEY_VALUE', 'X025X021');//medical condition
 define('MEDICINE_KEY_VALUE', 'X00900');//medicine
 define('IMPORTANT_WORD_KEY_VALUE', 'X00721');//important word
+define('SCHEDULE_KEY_VALUE', 'X0353');//family
 
 define('USER_WAITING_STATUS_KEY_VALUE', 'X52000');//waiting
 define('USER_AUTHENTICATED_STATUS_KEY_VALUE', 'X52002');//authenticated

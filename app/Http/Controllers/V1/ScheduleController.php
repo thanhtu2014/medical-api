@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 use App\Http\Requests\V1\ScheduleRequest;
 use App\Http\Controllers\BaseController;
-use App\Models\Hospital;
 use Carbon\Carbon;
 // use DateTime;
 
@@ -35,12 +34,12 @@ class ScheduleController extends BaseController
     {
         try {
             $schedules = $this->scheduleRepository->getAll();
-            // dd($schedules);
+
             return $this->sendResponse($schedules, 'Get schedule list successfully.');
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
-        }
+        }   
     }
 
     /**
@@ -62,7 +61,7 @@ class ScheduleController extends BaseController
     }
 
     /**
-     *  @param HospitalRequest $request
+     *  @param ScheduleRequest $request
      */
     public function store(ScheduleRequest $request)
     {
@@ -70,9 +69,9 @@ class ScheduleController extends BaseController
             $request->validated();
 
             $input = $request->all();
-            $input['type'] = '';
+            $input['type'] = SCHEDULE_KEY_VALUE;
             $input['date']= Carbon::createFromFormat('Y-m-d H:i', $request->date);
-            $input['color'] = '';
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
             $input['upd_by'] = Auth::user()->id;
@@ -81,7 +80,7 @@ class ScheduleController extends BaseController
             $schedule = $this->scheduleRepository->create($input);
 
             if($schedule) {
-                return $this->sendResponse($schedule, 'Create hospital successfully.');
+                return $this->sendResponse($schedule, 'Create schedule successfully.');
             }
 
         } catch (\Exception $e) {
@@ -91,7 +90,7 @@ class ScheduleController extends BaseController
     }
 
     /**
-     *  @param HospitalRequest $request
+     *  @param ScheduleRequest $request
      */
     public function update(ScheduleRequest $request)
     {
@@ -104,6 +103,7 @@ class ScheduleController extends BaseController
             $request->validated();
 
             $input = $request->all();
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
             $input['upd_by'] = Auth::user()->id;

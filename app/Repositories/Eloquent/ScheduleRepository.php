@@ -3,18 +3,19 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Schedule;
 
 class ScheduleRepository implements ScheduleRepositoryInterface
 {
     public function getAll()
     {
-        return Schedule::all('title', 'date', 'hospital', 'people');
+        return Schedule::where(['user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE] )->get();
     }
 
     public function getDetail($id)
     {
-        return Schedule::where('id', $id)->first();
+        return Schedule::where(['id' => $id, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
     public function create(array $scheduleDetails)
@@ -29,6 +30,6 @@ class ScheduleRepository implements ScheduleRepositoryInterface
 
     public function delete($id)
     {
-        Schedule::destroy($id);
+        Schedule::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
     }
 }
