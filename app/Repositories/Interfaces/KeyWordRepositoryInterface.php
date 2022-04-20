@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-interface HospitalRepositoryInterface
+interface KeyWordRepositoryInterface
 {
-    public function getHospitalListByType($type);
+    public function getListByType($type);
 
     public function getDetail($id, $type);
 

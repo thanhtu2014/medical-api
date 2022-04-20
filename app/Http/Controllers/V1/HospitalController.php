@@ -15,7 +15,12 @@ class HospitalController extends BaseController
     /**
      * @var HospitalRepositoryInterface
      */
-    protected $hospitalRepository;
+    private $hospitalRepository;
+
+    /**
+     * @var type
+     */
+    private $type;
 
     /**
      * HospitalController constructor.
@@ -24,6 +29,7 @@ class HospitalController extends BaseController
     public function __construct(HospitalRepositoryInterface $hospitalRepository) 
     {
         $this->hospitalRepository = $hospitalRepository;
+        $this->type = get_current_action_view_type();
     }
 
     /**
@@ -32,7 +38,7 @@ class HospitalController extends BaseController
     public function index() 
     {
         try {
-            $hospitals = $this->hospitalRepository->getAll();
+            $hospitals = $this->hospitalRepository->getHospitalListByType($this->type);
 
             return $this->sendResponse($hospitals, 'Get hospital list successfully.');
         } catch (\Exception $e) {
@@ -47,7 +53,7 @@ class HospitalController extends BaseController
     public function detail($id) 
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($id);
+            $hospital = $this->hospitalRepository->getDetail($id, $this->type);
 
             if($hospital) {
                 return $this->sendResponse($hospital, 'Get hospital detail successfully.');
@@ -69,7 +75,8 @@ class HospitalController extends BaseController
             $request->validated();
 
             $input = $request->all();
-            $input['type'] = HOSPITAL_TYPE_VALUE;
+            $input['type'] = HOSPITAL_OR_DOCTOR_KEY_VALUE;
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
@@ -100,6 +107,7 @@ class HospitalController extends BaseController
             $request->validated();
 
             $input = $request->all();
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();

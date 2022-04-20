@@ -8,6 +8,9 @@ use App\Http\Controllers\V1\HospitalController;
 use App\Http\Controllers\V1\PeopleController;
 use App\Http\Controllers\V1\FolderController;
 
+use App\Http\Controllers\V1\KeyWordController;
+use App\Http\Controllers\V1\Auth\GoogleController;
+use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,9 +31,14 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
         Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+        Route::post('/register', [AuthController::class, 'register'])->name('register.api');
+        Route::post('/confirm-code', [AuthController::class, 'confirmCode'])->name('confirm.code.api');
     });
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
+
+        // CHANGE PASSWORD
+        Route::post('/change-password', [ConfirmPasswordController::class, 'index'])->name('change.password.api');
 
         // HOSPITAL APIs
         Route::get('/hospitals', [HospitalController::class, 'index'])->name('hospitals.api');
@@ -61,6 +69,13 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/folders/{id}', [FolderController::class, 'delete'])->name('folders.delete.api');
         Route::post('/folders/{id}/create', [FolderController::class, 'createFolder'])->name('folders.createFolder.api');
         Route::post('/folders/{id}/list', [FolderController::class, 'listFolder'])->name('folders.listFolder.api');
+        
+        // MEDICINE APIs
+        Route::get('/medicines', [KeyWordController::class, 'index'])->name('medicines.api');
+        Route::post('/medicines', [KeyWordController::class, 'store'])->name('medicines.store.api');
+        Route::get('/medicines/{id}', [KeyWordController::class, 'detail'])->name('medicines.detail.api');
+        Route::put('/medicines/{id}', [KeyWordController::class, 'update'])->name('medicines.update.api');
+        Route::delete('/medicines/{id}', [KeyWordController::class, 'delete'])->name('medicines.delete.api');
         
     });
 

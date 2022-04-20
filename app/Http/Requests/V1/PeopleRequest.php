@@ -25,13 +25,16 @@ class PeopleRequest extends BaseAPIRequest
     {
         return [
             'name' => 'required|min:3|max:128',
+            'type' => 'max:24',
+            'org' => 'required|integer',
+            'dept' => 'min:3|max:128',
             'user' => 'max:128',
             'post' => 'max:8',
             'pref' => 'max:24',
             'pref_code' => 'max:24',
             'address' => 'min:6|max:1024',
             'xaddress' => 'min:6|max:1024',
-            'note' => 'min:3|max:1024',
+            'remark' => 'min:3|max:1024',
             'phone' => 'min:10|max:128',
             'mail' => 'email|min:6|max:255',
         ];

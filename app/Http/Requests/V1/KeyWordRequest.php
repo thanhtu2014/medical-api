@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use App\Http\Requests\BaseAPIRequest;
 
-class HospitalRequest extends BaseAPIRequest
+class KeyWordRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,14 @@ class HospitalRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:3|max:128',
-            'type' => 'max:24',
+            'image' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'name' => 'min:3|max:128',
+            'type' => 'min:3|max:24',
+            'color' => 'max:128',
             'user' => 'max:128',
-            'post' => 'max:8',
-            'pref' => 'max:24',
-            'pref_code' => 'max:24',
-            'address' => 'min:6|max:1024',
-            'xaddress' => 'min:6|max:1024',
-            'remark' => 'min:3|max:1024',
-            'phone' => 'min:10|max:128',
-            'mail' => 'email|min:6|max:255',
+            'vx01' => 'max:128',
+            'vx02' => 'max:128',
+            'remark' => 'min:3|max:1024'
         ];
     }
 
@@ -43,9 +40,7 @@ class HospitalRequest extends BaseAPIRequest
         return [
             'name.required' => 'Name is required!',
             'name.min' => 'Name must be at least 3 characters!',
-            'address.min' => 'Address must be at least 6 characters!',
-            'address.max' => 'Address must be at least 1024 characters!',
-            'remark.min' => 'Remark must be at least 3 characters!',
+            'remark.min' => 'Remark must be at least 6 characters!',
             'remark.max' => 'Remark must be at least 1024 characters!',
         ];
     }

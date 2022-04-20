@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 if (!function_exists('get_current_action_view_type')) {
     /**
@@ -12,19 +13,55 @@ if (!function_exists('get_current_action_view_type')) {
         $type = '';
 
         $routeName = Route::currentRouteName();
-        switch($routeName) {
+        //get route root
+        $routeRoot = explode('.', $routeName, 3)[0].'.'.explode('.', $routeName, 3)[1];
+        switch($routeRoot) {
             case(DOCTOR_ROUTE_NAME_V1):
-                $type = 'doctor';
+                $type = HOSPITAL_OR_DOCTOR_KEY_VALUE;//hospital or family
                 break;
             
             case(FAMILY_ROUTE_NAME_V1):
-                $type = 'family';
+                $type = FAMILY_KEY_VALUE; //family
                 break;
             
+            case(MEDICINE_ROUTE_NAME_V1):
+                $type = FAMILY_KEY_VALUE; //medicine
+                break;
+
+            // case(FAMILY_ROUTE_NAME_V1):
+            //     $type = FAMILY_KEY_VALUE; //keyword
+            //     break;
+
+            // case(FAMILY_ROUTE_NAME_V1):
+            //     $type = FAMILY_KEY_VALUE; //medical condition
+            //     break;
+
+            
+            
+            // case(FAMILY_ROUTE_NAME_V1):
+            //     $type = FAMILY_KEY_VALUE; //important word
+            //     break;
+            
             default:
-                $type = 'doctor';
+                $type = HOSPITAL_OR_DOCTOR_KEY_VALUE;
         }
 
         return $type;
+    }
+}
+
+if (!function_exists('generate_unique_code')) {
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    function generate_unique_code()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (User::where("code", "=", $code)->first());
+  
+        return $code;
     }
 }

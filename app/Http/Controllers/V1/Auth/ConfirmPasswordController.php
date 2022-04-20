@@ -3,38 +3,47 @@
 namespace App\Http\Controllers\V1\Auth;
 
 use App\Http\Controllers\BaseController;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\ConfirmsPasswords;
+use App\Http\Requests\V1\ConfirmPasswordRequest;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class ConfirmPasswordController extends BaseController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Confirm Password Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password confirmations and
-    | uses a simple trait to include the behavior. You're free to explore
-    | this trait and override any functions that require customization.
-    |
-    */
-
-    use ConfirmsPasswords;
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
 
     /**
-     * Where to redirect users when the intended url fails.
-     *
-     * @var string
+     * AuthController constructor.
+     * @param UserRepository $userRepository
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(UserRepositoryInterface $userRepository) 
     {
-        $this->middleware('auth');
+        $this->userRepository = $userRepository;
+    }
+
+    public function index(ConfirmPasswordRequest $request) 
+    {
+        try {
+            $request->validated();
+
+            $user = $this->userRepository->getUserById($request->user_id);
+
+            if($user) {
+                $userUpdate = $this->userRepository->update(
+                    $user->id, [
+                        'code' => NULL, 
+                        'status' => USER_AUTHENTICATED_STATUS_KEY_VALUE
+                    ]);
+
+                $userDetail = $this->userRepository->getUserById($request->user_id);
+
+                return $this->sendResponse($userDetail, 'Update password successfully.');
+            }
+
+            return $this->sendError('User not found!', ['error'=>'User not found!'], 404);
+        } catch(Exception $error) {
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
+        }
     }
 }

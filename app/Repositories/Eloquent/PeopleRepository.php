@@ -3,18 +3,19 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use App\Models\People;
 
 class PeopleRepository implements PeopleRepositoryInterface
 {
-    public function getPeopleListByType($type)
+    public function getListByType($type)
     {
-        return People::where('type', $type)->get();
+        return People::where(['type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
     public function getDetail($id, $type)
     {
-        return People::where(['id' => $id, 'type' => $type])->first();
+        return People::where(['id' => $id, 'type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function create(array $data)
@@ -29,6 +30,6 @@ class PeopleRepository implements PeopleRepositoryInterface
 
     public function delete($id)
     {
-        People::destroy($id);
+        People::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
     }
 }

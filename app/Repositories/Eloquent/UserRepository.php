@@ -12,9 +12,19 @@ class UserRepository implements UserRepositoryInterface
         return User::all();
     }
 
+    public function getUserById($id)
+    {
+        return User::where('id', $id)->first();
+    }
+
     public function getUserByEmail($email)
     {
         return User::where('email', $email)->first();
+    }
+
+    public function getUserByCode($code)
+    {
+        return User::where(['code' => $code, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function getUserByGoogleId($googleId)
