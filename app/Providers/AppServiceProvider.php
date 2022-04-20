@@ -17,6 +17,8 @@ use App\Repositories\Eloquent\MediaKeyWordRepository;
 use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
+use App\Repositories\Eloquent\TagRepository;
+use App\Repositories\Interfaces\TagRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,6 +62,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ScheduleRepositoryInterface::class,
             ScheduleRepository::class
+        );
+
+        $this->app->bind(
+            TagRepositoryInterface::class,
+            TagRepository::class
         );
         
     }

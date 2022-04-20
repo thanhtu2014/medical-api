@@ -11,6 +11,7 @@ use App\Http\Controllers\V1\KeywordController;
 use App\Http\Controllers\V1\Auth\GoogleController;
 use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 use App\Http\Controllers\V1\ScheduleController;
+use App\Http\Controllers\V1\TagController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,6 +76,12 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/medicines/{id}', [KeywordController::class, 'update'])->name('medicines.update.api');
         Route::delete('/medicines/{id}', [KeywordController::class, 'delete'])->name('medicines.delete.api');
         
+        //TAGS APIs 
+        Route::get('/tags', [TagController::class, 'index'])->name('tags.api');
+        Route::post('/tags', [TagController::class, 'store'])->name('tags.store.api');
+        Route::get('/tags/{id}', [TagController::class, 'getTagDetail'])->name('tags.detail.api');
+        Route::put('/tags/{id}', [TagController::class, 'update'])->name('tags.update.api');
+        Route::delete('/tags/{id}', [TagController::class, 'delete'])->name('tags.delete.api');
     });
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
