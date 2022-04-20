@@ -5,10 +5,8 @@ define('HOSPITAL_ROUTE_NAME_V1', 'v1.hospitals');
 define('MEDICINE_ROUTE_NAME_V1', 'v1.medicines');
 define('FAMILY_ROUTE_NAME_V1', 'v1.family');
 
-define('HOSPITAL_TYPE_VALUE', 'hospital');
-define('DOCTOR_TYPE_VALUE', 'doctor');
-define('FAMILY_TYPE_VALUE', 'family');
-define('FOLDER_TYPE_VALUE', 'folder');
+define('FOLDER_TYPE_KEY_VALUE', 'X3633');//folder
+
 define('HOSPITAL_OR_DOCTOR_KEY_VALUE', 'X620018');//doctor or hospital
 define('FAMILY_KEY_VALUE', 'X36761');//family
 define('KEY_WORD_KEY_VALUE', 'X36760');//keyword

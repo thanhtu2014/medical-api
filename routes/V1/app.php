@@ -69,8 +69,7 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/folders/{id}', [FolderController::class, 'getFolderDetail'])->name('folders.getFolderDetail.api');
         Route::put('/folders/{id}', [FolderController::class, 'update'])->name('folders.update.api');
         Route::delete('/folders/{id}', [FolderController::class, 'delete'])->name('folders.delete.api');
-        Route::post('/folders/{id}/create', [FolderController::class, 'createFolder'])->name('folders.createFolder.api');
-        Route::post('/folders/{id}/list', [FolderController::class, 'listFolder'])->name('folders.listFolder.api');
+        Route::put('/folders/{id}/delete', [FolderController::class, 'deleteFolder'])->name('folders.deleteFolder.api');
         
         // MEDICINE APIs
         Route::get('/medicines', [KeywordController::class, 'index'])->name('medicines.api');
