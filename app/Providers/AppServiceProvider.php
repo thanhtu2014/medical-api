@@ -11,10 +11,12 @@ use App\Repositories\Eloquent\DoctorRepository;
 use App\Repositories\Interfaces\DoctorRepositoryInterface;
 use App\Repositories\Eloquent\KeyWordRepository;
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
-use App\Repositories\Eloquent\MediaKeywordRepository;
-use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
 use App\Repositories\Eloquent\FamilyRepository;
 use App\Repositories\Interfaces\FamilyRepositoryInterface;
+use App\Repositories\Eloquent\MediaKeyWordRepository;
+use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,6 +56,12 @@ class AppServiceProvider extends ServiceProvider
             MediaKeywordRepositoryInterface::class,
             MediaKeywordRepository::class
         );
+
+        $this->app->bind(
+            ScheduleRepositoryInterface::class,
+            ScheduleRepository::class
+        );
+        
     }
 
     /**
