@@ -4,18 +4,18 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Models\Folder;
+use Illuminate\Support\Facades\Auth;
 
 class FolderRepository implements FolderRepositoryInterface
 {
-    
-    public function getAll()
+    public function getFolderListByUser()
     {
-        return Folder::all();
+        return Folder::where(['user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
     public function getDetail($id)
     {
-        return Folder::where('id', $id)->first();
+        return Folder::where(['id' => $id, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function create(array $data)
@@ -30,7 +30,7 @@ class FolderRepository implements FolderRepositoryInterface
 
     public function delete($id)
     {
-        Folder::destroy($id);
+        Folder::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
     }
 
     public function getlist($folderId)

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Http\Requests\V1\FolderRequest;
-use App\Http\Requests\V1\CreateFolderRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
 
@@ -25,6 +24,7 @@ class FolderController extends BaseController
     public function __construct(FolderRepositoryInterface $folderRepository) 
     {
         $this->folderRepository = $folderRepository;
+        
     }
 
     /**
@@ -33,8 +33,7 @@ class FolderController extends BaseController
     public function index() 
     {
         try {
-            $folders = $this->folderRepository->getAll();
-
+            $folders = $this->folderRepository->getFolderListByUser();
             return $this->sendResponse($folders, 'Get folder list successfully.');
         } catch (\Exception $e) {
             throw $e;
@@ -71,6 +70,7 @@ class FolderController extends BaseController
 
             $input = $request->all();
             $input['type'] = FOLDER_TYPE_KEY_VALUE;
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
@@ -139,36 +139,4 @@ class FolderController extends BaseController
             return $this->sendError("Something when wrong!", 500);
         }
     }
-
-    /**
-     *  @param FolderRequest $request
-     */
-    public function deleteFolder(FolderRequest $request)
-    {
-        try {
-            $folder = $this->folderRepository->getDetail($request->id);
-
-            if(!$folder) {
-                return $this->sendError("Folder not found with ID : $request->id!", 404);
-            }
-            $request->validated();
-
-            $input = $request->all();
-            $input['chg'] = CHG_DELETE_VALUE;
-            $input['new_by'] = Auth::user()->id;
-            $input['upd_by'] = Auth::user()->id;
-            $input['upd_ts'] = Carbon::now();
-
-            $folder = $this->folderRepository->update($request->id, $input);
-            if($folder) {
-                return $this->sendResponse($folder, 'Delete folder successfully.');
-            }
-
-        } catch (\Exception $e) {
-            throw $e;
-            return $this->sendError("Something when wrong!", 500);
-        }
-    }
-
-
 }
