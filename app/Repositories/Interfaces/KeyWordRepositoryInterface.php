@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface KeyWordRepositoryInterface
+interface KeywordRepositoryInterface
 {
     public function getListByType($type);
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use App\Http\Requests\BaseAPIRequest;
 
-class PeopleRequest extends BaseAPIRequest
+class DoctorRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Interfaces\KeyWordRepositoryInterface;
+use App\Repositories\Interfaces\KeywordRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\KeyWord;
 
-class KeyWordRepository implements KeyWordRepositoryInterface
+class KeywordRepository implements KeywordRepositoryInterface
 {
     public function getListByType($type)
     {

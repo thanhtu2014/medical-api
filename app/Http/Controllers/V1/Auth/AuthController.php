@@ -81,13 +81,12 @@ class AuthController extends BaseController
 
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
                 $user = Auth::user();
-                dd($user);
                 $success = $user->createToken('Personal Access Token')->plainTextToken;
 
                 return $this->sendResponseGetToken($success, 'User login successfully.');
             } 
             else{ 
-                return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+                return $this->sendError('Unauthorized.', ['error'=>'Wrong username or password!'], 401);
             }
         } catch(Exception $error) {
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);

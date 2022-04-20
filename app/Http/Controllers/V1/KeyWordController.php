@@ -5,24 +5,24 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\Interfaces\KeyWordRepositoryInterface;
-use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Interfaces\KeywordRepositoryInterface;
+use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
 use App\Http\Requests\V1\KeyWordRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
 use DB;
 
-class KeyWordController extends BaseController
+class KeywordController extends BaseController
 {
     /**
-     * @var KeyWordRepositoryInterface
+     * @var KeywordRepositoryInterface
      */
-    private $keyWordRepository;
+    private $keywordRepository;
 
     /**
-     * @var MediaKeyWordRepositoryInterface
+     * @var MediaKeywordRepositoryInterface
      */
-    private $mediaKeyWordRepository;
+    private $mediaKeywordRepository;
 
     /**
      * @var type
@@ -30,16 +30,16 @@ class KeyWordController extends BaseController
     private $type;
 
     /**
-     * KeyWordController constructor.
-     * @param KeyWordRepositoryInterface $keyWordRepository
-     * @param MediaKeyWordRepositoryInterface $mediaKeyWordRepository
+     * KeywordController constructor.
+     * @param KeywordRepositoryInterface $keywordRepository
+     * @param MediaKeywordRepositoryInterface $mediaKeywordRepository
      */
     public function __construct(
-        KeyWordRepositoryInterface $keyWordRepository,
-        MediaKeyWordRepositoryInterface $mediaKeyWordRepository
+        KeywordRepositoryInterface $keywordRepository,
+        MediaKeywordRepositoryInterface $mediaKeywordRepository
     ) {
-        $this->keyWordRepository = $keyWordRepository;
-        $this->mediaKeyWordRepository = $mediaKeyWordRepository;
+        $this->keyWordRepository = $keywordRepository;
+        $this->mediaKeyWordRepository = $mediaKeywordRepository;
         $this->type = get_current_action_view_type();
     }
 

@@ -29,7 +29,7 @@ class People extends Authenticatable
         'xaddress',
         'remark',
         'phone',
-        'mail',
+        'email',
         'chg',
         'new_by',
         'new_ts',
