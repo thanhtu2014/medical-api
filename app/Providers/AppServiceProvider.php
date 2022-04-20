@@ -13,8 +13,12 @@ use App\Repositories\Eloquent\FolderRepository;
 use App\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Repositories\Eloquent\KeyWordRepository;
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
+use App\Repositories\Eloquent\FamilyRepository;
+use App\Repositories\Interfaces\FamilyRepositoryInterface;
 use App\Repositories\Eloquent\MediaKeyWordRepository;
 use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,6 +58,12 @@ class AppServiceProvider extends ServiceProvider
             FolderRepositoryInterface::class,
             FolderRepository::class
         );
+
+        $this->app->bind(
+            ScheduleRepositoryInterface::class,
+            ScheduleRepository::class
+        );
+        
     }
 
     /**
