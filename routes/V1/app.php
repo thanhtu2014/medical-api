@@ -9,6 +9,8 @@ use App\Http\Controllers\V1\PeopleController;
 use App\Http\Controllers\V1\FolderController;
 
 use App\Http\Controllers\V1\KeyWordController;
+use App\Http\Controllers\V1\DoctorController;
+use App\Http\Controllers\V1\FamilyController;
 use App\Http\Controllers\V1\Auth\GoogleController;
 use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 /*
@@ -48,18 +50,18 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/hospitals/{id}', [HospitalController::class, 'delete'])->name('hospitals.delete.api');
 
         // DOCTOR APIs
-        Route::get('/doctors', [PeopleController::class, 'index'])->name('doctors.api');
-        Route::post('/doctors', [PeopleController::class, 'store'])->name('doctors.store.api');
-        Route::get('/doctors/{id}', [PeopleController::class, 'detail'])->name('doctors.detail.api');
-        Route::put('/doctors/{id}', [PeopleController::class, 'update'])->name('doctors.update.api');
-        Route::delete('/doctors/{id}', [PeopleController::class, 'delete'])->name('doctors.delete.api');
+        Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.api');
+        Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store.api');
+        Route::get('/doctors/{id}', [DoctorController::class, 'detail'])->name('doctors.detail.api');
+        Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update.api');
+        Route::delete('/doctors/{id}', [DoctorController::class, 'delete'])->name('doctors.delete.api');
 
         // FAMILY APIs
-        Route::get('/family', [PeopleController::class, 'index'])->name('family.api');
-        Route::post('/family', [PeopleController::class, 'store'])->name('family.store.api');
-        Route::get('/family/{id}', [PeopleController::class, 'getHospitalDetail'])->name('family.detail.api');
-        Route::put('/family/{id}', [PeopleController::class, 'update'])->name('family.update.api');
-        Route::delete('/family/{id}', [PeopleController::class, 'delete'])->name('family.delete.api');
+        Route::get('/family', [FamilyController::class, 'index'])->name('family.api');
+        Route::post('/family', [FamilyController::class, 'store'])->name('family.store.api');
+        Route::get('/family/{id}', [FamilyController::class, 'detail'])->name('family.detail.api');
+        Route::put('/family/{id}', [FamilyController::class, 'update'])->name('family.update.api');
+        Route::delete('/family/{id}', [FamilyController::class, 'delete'])->name('family.delete.api');
 
         // FOLDER APIs
         Route::get('/folders', [FolderController::class, 'index'])->name('folders.api');
@@ -71,11 +73,11 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::post('/folders/{id}/list', [FolderController::class, 'listFolder'])->name('folders.listFolder.api');
         
         // MEDICINE APIs
-        Route::get('/medicines', [KeyWordController::class, 'index'])->name('medicines.api');
-        Route::post('/medicines', [KeyWordController::class, 'store'])->name('medicines.store.api');
-        Route::get('/medicines/{id}', [KeyWordController::class, 'detail'])->name('medicines.detail.api');
-        Route::put('/medicines/{id}', [KeyWordController::class, 'update'])->name('medicines.update.api');
-        Route::delete('/medicines/{id}', [KeyWordController::class, 'delete'])->name('medicines.delete.api');
+        Route::get('/medicines', [KeywordController::class, 'index'])->name('medicines.api');
+        Route::post('/medicines', [KeywordController::class, 'store'])->name('medicines.store.api');
+        Route::get('/medicines/{id}', [KeywordController::class, 'detail'])->name('medicines.detail.api');
+        Route::put('/medicines/{id}', [KeywordController::class, 'update'])->name('medicines.update.api');
+        Route::delete('/medicines/{id}', [KeywordController::class, 'delete'])->name('medicines.delete.api');
         
     });
 

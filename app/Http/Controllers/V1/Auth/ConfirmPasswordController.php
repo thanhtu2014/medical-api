@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Auth;
 
 use App\Http\Controllers\BaseController;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\V1\ConfirmPasswordRequest;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
@@ -32,7 +33,8 @@ class ConfirmPasswordController extends BaseController
             if($user) {
                 $userUpdate = $this->userRepository->update(
                     $user->id, [
-                        'code' => NULL, 
+                        'code' => NULL,
+                        'password' => Hash::make($request->password),
                         'status' => USER_AUTHENTICATED_STATUS_KEY_VALUE
                     ]);
 

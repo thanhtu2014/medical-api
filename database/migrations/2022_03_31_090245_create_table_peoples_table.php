@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('xaddress', 1024)->nullable()->default(null);
             $table->string('remark', 1024)->nullable()->default(null);
             $table->string('phone', 128)->nullable()->default(null);
-            $table->string('mail', 255)->nullable()->default(null);
+            $table->string('email', 255)->nullable()->default(null);
             $table->char('chg', 1)->default('Y');
             $table->string('new_by', 128);
             $table->dateTime('new_ts', $precision = 0)->useCurrent();

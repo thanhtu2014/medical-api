@@ -2,20 +2,20 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use App\Repositories\Interfaces\DoctorRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\People;
 
-class PeopleRepository implements PeopleRepositoryInterface
+class DoctorRepository implements DoctorRepositoryInterface
 {
-    public function getListByType($type)
+    public function getAll()
     {
-        return People::where(['type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
+        return People::where(['type' => HOSPITAL_OR_DOCTOR_KEY_VALUE, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
     }
 
-    public function getDetail($id, $type)
+    public function getDetail($id)
     {
-        return People::where(['id' => $id, 'type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
+        return People::where(['id' => $id, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
     }
 
     public function create(array $data)
