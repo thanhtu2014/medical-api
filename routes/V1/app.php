@@ -5,9 +5,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\V1\Auth\AuthController;
 use App\Http\Controllers\V1\HospitalController;
+use App\Http\Controllers\V1\PeopleController;
+use App\Http\Controllers\V1\FolderController;
+
+use App\Http\Controllers\V1\KeyWordController;
 use App\Http\Controllers\V1\DoctorController;
 use App\Http\Controllers\V1\FamilyController;
-use App\Http\Controllers\V1\KeywordController;
 use App\Http\Controllers\V1\Auth\GoogleController;
 use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 use App\Http\Controllers\V1\ScheduleController;
@@ -68,6 +71,14 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/family/{id}', [FamilyController::class, 'update'])->name('family.update.api');
         Route::delete('/family/{id}', [FamilyController::class, 'delete'])->name('family.delete.api');
 
+        // FOLDER APIs
+        Route::get('/folders', [FolderController::class, 'index'])->name('folders.api');
+        Route::post('/folders', [FolderController::class, 'store'])->name('folders.store.api');
+        Route::get('/folders/{id}', [FolderController::class, 'getFolderDetail'])->name('folders.getFolderDetail.api');
+        Route::put('/folders/{id}', [FolderController::class, 'update'])->name('folders.update.api');
+        Route::delete('/folders/{id}', [FolderController::class, 'delete'])->name('folders.delete.api');
+        Route::put('/folders/{id}/delete', [FolderController::class, 'deleteFolder'])->name('folders.deleteFolder.api');
+        
         // MEDICINE APIs
         Route::get('/medicines', [KeywordController::class, 'index'])->name('medicines.api');
         Route::post('/medicines', [KeywordController::class, 'store'])->name('medicines.store.api');

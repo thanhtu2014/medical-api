@@ -7,8 +7,10 @@ use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Eloquent\HospitalRepository;
 use App\Repositories\Interfaces\HospitalRepositoryInterface;
-use App\Repositories\Eloquent\DoctorRepository;
-use App\Repositories\Interfaces\DoctorRepositoryInterface;
+use App\Repositories\Eloquent\PeopleRepository;
+use App\Repositories\Interfaces\PeopleRepositoryInterface;
+use App\Repositories\Eloquent\FolderRepository;
+use App\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Repositories\Eloquent\KeyWordRepository;
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
 use App\Repositories\Eloquent\FamilyRepository;
@@ -38,13 +40,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            DoctorRepositoryInterface::class,
-            DoctorRepository::class
-        );
-
-        $this->app->bind(
-            FamilyRepositoryInterface::class,
-            FamilyRepository::class
+            PeopleRepositoryInterface::class,
+            PeopleRepository::class
         );
 
         $this->app->bind(
@@ -53,8 +50,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            MediaKeywordRepositoryInterface::class,
-            MediaKeywordRepository::class
+            MediaKeyWordRepositoryInterface::class,
+            MediaKeyWordRepository::class
+        );
+
+        $this->app->bind(
+            FolderRepositoryInterface::class,
+            FolderRepository::class
         );
 
         $this->app->bind(
