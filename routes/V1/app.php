@@ -9,6 +9,7 @@ use App\Http\Controllers\V1\PeopleController;
 use App\Http\Controllers\V1\KeyWordController;
 use App\Http\Controllers\V1\Auth\GoogleController;
 use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
+use App\Http\Controllers\V1\ScheduleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,6 +45,13 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/hospitals/{id}', [HospitalController::class, 'detail'])->name('hospitals.detail.api');
         Route::put('/hospitals/{id}', [HospitalController::class, 'update'])->name('hospitals.update.api');
         Route::delete('/hospitals/{id}', [HospitalController::class, 'delete'])->name('hospitals.delete.api');
+
+        // SCHEDULE APIs
+        Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedules.api');
+        Route::post('/schedules', [ScheduleController::class, 'store'])->name('schedules.store.api');
+        Route::get('/schedules/{id}', [ScheduleController::class, 'getScheduleDetail'])->name('schedules.detail.api');
+        Route::put('/schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update.api');
+        Route::delete('/schedules/{id}', [ScheduleController::class, 'delete'])->name('schedules.delete.api');
 
         // DOCTOR APIs
         Route::get('/doctors', [PeopleController::class, 'index'])->name('doctors.api');

@@ -13,6 +13,8 @@ use App\Repositories\Eloquent\KeyWordRepository;
 use App\Repositories\Interfaces\KeyWordRepositoryInterface;
 use App\Repositories\Eloquent\MediaKeyWordRepository;
 use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Eloquent\ScheduleRepository;
+use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,6 +49,12 @@ class AppServiceProvider extends ServiceProvider
             MediaKeyWordRepositoryInterface::class,
             MediaKeyWordRepository::class
         );
+
+        $this->app->bind(
+            ScheduleRepositoryInterface::class,
+            ScheduleRepository::class
+        );
+        
     }
 
     /**
