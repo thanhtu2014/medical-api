@@ -81,9 +81,9 @@ class AuthController extends BaseController
 
             if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
                 $user = Auth::user();
-                $success = $user->createToken('Personal Access Token')->plainTextToken;
+                $success_token = $user->createToken('Personal Access Token')->plainTextToken;
 
-                return $this->sendResponseGetToken($success, 'User login successfully.');
+                return $this->sendResponseGetToken($user, $success_token, 'User login successfully.');
             } 
             else{ 
                 return $this->sendError('Unauthorized.', ['error'=>'Wrong username or password!'], 401);
@@ -146,7 +146,7 @@ class AuthController extends BaseController
                         'token' => $success
                     ]);
 
-                return $this->sendResponseGetToken($success, 'Verify code successfully.');
+                return $this->sendResponseGetToken($user, $success, 'Verify code successfully.');
             }
 
             return $this->sendError('User not found!', ['error'=>'User not found!'], 404);
@@ -159,6 +159,6 @@ class AuthController extends BaseController
     {
         Auth::user()->token()->delete();
         $response = ['message' => 'You have been successfully logged out!'];
-        return $this->sendResponseGetToken($response, 200);
+        return $this->sendResponseGetToken([], $response, 200);
     }
 }
