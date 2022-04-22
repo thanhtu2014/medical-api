@@ -26,7 +26,7 @@ class ScheduleRequest extends BaseAPIRequest
         return [
             'title' => 'required|min:3|max:128',
             'date' => 'required',
-            'color'=> 'required|min:3|max:6',
+            'color' => 'max:128',
             'hospital' => 'required',
             'people' => 'required',
             'remark' => 'min:3|max:1024',

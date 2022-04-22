@@ -25,7 +25,7 @@ class TagRequest extends BaseAPIRequest
     {
         return [
             'name' => 'required|min:3|max:128',
-            'color'=> 'required|min:3|max:6',
+            'color' => 'max:128',
         ];
     }
 
@@ -33,7 +33,6 @@ class TagRequest extends BaseAPIRequest
     {
         return [
             'name.required' => 'Name is required!',
-            'color.required' => 'Color is required!',
         ];
     }
 }

@@ -21,6 +21,8 @@ use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 use App\Repositories\Eloquent\TagRepository;
 use App\Repositories\Interfaces\TagRepositoryInterface;
+use App\Repositories\Eloquent\AccountRepository;
+use App\Repositories\Interfaces\AccountRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -70,7 +72,11 @@ class AppServiceProvider extends ServiceProvider
             TagRepositoryInterface::class,
             TagRepository::class
         );
-        
+
+        $this->app->bind(
+            AccountRepositoryInterface::class,
+            AccountRepository::class
+        );
     }
 
     /**
