@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('type', 24);
             $table->string('email', 255)->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('temail', 255)->unique();
             $table->string('name', 128);
             $table->string('password', 1024);
             $table->rememberToken();
@@ -26,7 +26,10 @@ return new class extends Migration
             $table->dateTime('expired', $precision = 0)->nullable();
             $table->string('plan', 24);
             $table->string('code', 6)->nullable();
+            $table->string('gender', 24);
+            $table->string('remark', 1024)->nullable();
             $table->string('status', 24);
+            $table->string('progress', 24);
             $table->char('chg', 1)->default('Y');
             $table->string('new_by', 128);
             $table->dateTime('new_ts', $precision = 0)->useCurrent();

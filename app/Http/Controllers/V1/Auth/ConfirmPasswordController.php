@@ -36,11 +36,11 @@ class ConfirmPasswordController extends BaseController
                         'code' => NULL,
                         'password' => Hash::make($request->password),
                         'status' => USER_AUTHENTICATED_STATUS_KEY_VALUE
-                    ]);
+                    ]); 
 
                 $userDetail = $this->userRepository->getUserById($request->user_id);
 
-                return $this->sendResponse($userDetail, 'Update password successfully.');
+                return $this->sendResponseGetToken($userDetail, 'Update password successfully.');
             }
 
             return $this->sendError('User not found!', ['error'=>'User not found!'], 404);

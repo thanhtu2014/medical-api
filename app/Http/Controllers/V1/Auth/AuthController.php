@@ -83,7 +83,13 @@ class AuthController extends BaseController
                 $user = Auth::user();
                 $success_token = $user->createToken('Personal Access Token')->plainTextToken;
 
-                return $this->sendResponseGetToken($user, $success_token, 'User login successfully.');
+                //Update tokens
+                $this->userRepository->update($user->id, ['token' => $success_token]);
+
+                //Get user detail with new token generated
+                $userDetail = Auth::user();
+
+                return $this->sendResponseGetToken($userDetail, $success_token, 'User login successfully.');
             } 
             else{ 
                 return $this->sendError('Unauthorized.', ['error'=>'Wrong username or password!'], 401);

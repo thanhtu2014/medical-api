@@ -67,13 +67,12 @@ class FamilyController extends BaseController
     public function store(Request $request)
     {
         try {
-            dd(Route::currentRouteName());
-            $request->validate([
-                'title' => 'required|min:3|max:128',
-                'remark' => 'min:3|max:1024',
-            ]);
-            if (str_contains(Route::currentRouteName(), 'family')) {
-                
+            if(exist($request->ID)) {
+                $request->validate([
+                    'title' => 'required|min:3|max:128',
+                    'id' => 'required|min:3|max:1024',
+                    'remark' => 'min:3|max:1024',
+                ]);
             }
             // $validated = $request->validated();
             $validated = $request->accepted('email');
