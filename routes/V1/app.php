@@ -15,6 +15,8 @@ use App\Http\Controllers\V1\Auth\GoogleController;
 use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 use App\Http\Controllers\V1\ScheduleController;
 use App\Http\Controllers\V1\TagController;
+use App\Http\Controllers\V1\AccountController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,6 +60,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update.api');
         Route::delete('/schedules/{id}', [ScheduleController::class, 'delete'])->name('schedules.delete.api');
 
+        Route::post('/schedules-month', [ScheduleController::class, 'getScheduleByMonth'])->name('schedules.getScheduleByMonth.api');
+
+
         // DOCTOR APIs
         Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.api');
         Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store.api');
@@ -93,6 +98,13 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/tags/{id}', [TagController::class, 'getTagDetail'])->name('tags.detail.api');
         Route::put('/tags/{id}', [TagController::class, 'update'])->name('tags.update.api');
         Route::delete('/tags/{id}', [TagController::class, 'delete'])->name('tags.delete.api');
+
+        //ACCOUNT APIs
+        Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.api');
+        Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store.api');
+        Route::get('/accounts/{id}', [AccountController::class, 'detail'])->name('accounts.detail.api');
+        Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update.api');
+        Route::delete('/accounts/{id}', [AccountController::class, 'delete'])->name('accounts.delete.api');
     });
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -70,6 +70,7 @@ class TagController extends BaseController
             $input = $request->all();
             // KEY_WORD_KEY_VALUE
             $input['type'] = 123 ;
+            $input['color'] = $request->input('color') ? $request->input('color') : 'Nope';
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
