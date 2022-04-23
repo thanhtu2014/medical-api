@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\BaseRepository;
+use App\Repositories\EloquentRepositoryInterface;
 use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Eloquent\HospitalRepository;
@@ -31,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(
+            EloquentRepositoryInterface::class,
+            BaseRepository::class
+        );
+
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class

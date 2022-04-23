@@ -18,18 +18,12 @@ class HospitalController extends BaseController
     private $hospitalRepository;
 
     /**
-     * @var type
-     */
-    private $type;
-
-    /**
      * HospitalController constructor.
      * @param HospitalRepositoryInterface $hospitalRepository
      */
     public function __construct(HospitalRepositoryInterface $hospitalRepository) 
     {
         $this->hospitalRepository = $hospitalRepository;
-        $this->type = get_current_action_view_type();
     }
 
     /**
@@ -38,7 +32,11 @@ class HospitalController extends BaseController
     public function index() 
     {
         try {
-            $hospitals = $this->hospitalRepository->getHospitalListByType($this->type);
+            $hospitals = $this->hospitalRepository->allBy([
+                'type' => HOSPITAL_OR_DOCTOR_KEY_VALUE, 
+                'user' => Auth::user()->id,
+                'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($hospitals, 'Get hospital list successfully.');
         } catch (\Exception $e) {
@@ -53,7 +51,7 @@ class HospitalController extends BaseController
     public function detail($id) 
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($id, $this->type);
+            $hospital = $this->hospitalRepository->findById($id);
 
             if($hospital) {
                 return $this->sendResponse($hospital, 'Get hospital detail successfully.');
@@ -99,7 +97,7 @@ class HospitalController extends BaseController
     public function update(HospitalRequest $request)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($request->id);
+            $hospital = $this->hospitalRepository->findById($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
@@ -136,7 +134,7 @@ class HospitalController extends BaseController
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
             }
 
-            $this->hospitalRepository->delete($request->id);
+            $this->hospitalRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete hospital successfully.');
 

@@ -40,7 +40,7 @@ class ConfirmPasswordController extends BaseController
 
                 $userDetail = $this->userRepository->getUserById($request->user_id);
 
-                return $this->sendResponseGetToken($userDetail, 'Update password successfully.');
+                return $this->sendResponseGetToken($userDetail, $userDetail->token, 'Update password successfully.');
             }
 
             return $this->sendError('User not found!', ['error'=>'User not found!'], 404);
