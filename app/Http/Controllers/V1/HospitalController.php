@@ -57,7 +57,7 @@ class HospitalController extends BaseController
                 return $this->sendResponse($hospital, 'Get hospital detail successfully.');
             }
 
-            return $this->sendError("Not found!", 404);
+            return $this->sendError("Hospital not found with ID : $id!", 404);
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
@@ -128,7 +128,7 @@ class HospitalController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($request->id);
+            $hospital = $this->hospitalRepository->findById($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);

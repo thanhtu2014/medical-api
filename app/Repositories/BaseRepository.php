@@ -70,7 +70,7 @@ class BaseRepository implements EloquentRepositoryInterface
         array $relations = [],
         array $appends = []
     ): ?Model {
-        return $this->model->select($columns)->with($relations)->findOrFail($modelId)->append($appends);
+        return $this->model->select($columns)->with($relations)->whereId($modelId)->Where(['chg' => CHG_VALID_VALUE])->first();
     }
 
     /**
@@ -130,7 +130,7 @@ class BaseRepository implements EloquentRepositoryInterface
      */
     public function deleteById(int $modelId): bool
     {
-        return $this->findById($modelId)->delete();
+        return $this->findById($modelId)->update(['chg' => CHG_DELETE_VALUE]);
     }
 
     /**
