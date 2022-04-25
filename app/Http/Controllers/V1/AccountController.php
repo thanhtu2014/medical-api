@@ -31,7 +31,7 @@ class AccountController extends BaseController
     public function detail($id) 
     {
         try {
-            $account = $this->accountRepository->getDetail($id);
+            $account = $this->accountRepository->findById($id);
 
             if($account) {
                 return $this->sendResponse($account, 'Get account detail successfully.');
@@ -50,7 +50,7 @@ class AccountController extends BaseController
     public function update(AccountRequest $request)
     {
         try {
-            $account = $this->accountRepository->getDetail($request->id);
+            $account = $this->accountRepository->findById($request->id);
 
             if(!$account) {
                 return $this->sendError("Account not found with ID : $request->id!", 404);
@@ -80,13 +80,13 @@ class AccountController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->hospitalRepository->getDetail($request->id);
+            $hospital = $this->hospitalRepository->findById($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
             }
 
-            $this->hospitalRepository->delete($request->id);
+            $this->hospitalRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete hospital successfully.');
 

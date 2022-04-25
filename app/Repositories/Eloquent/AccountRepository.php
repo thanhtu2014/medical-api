@@ -4,22 +4,22 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\AccountRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\BaseRepository;
 use App\Models\User;
 
-class AccountRepository implements AccountRepositoryInterface
-{
-    public function getDetail($id)
-    {
-        return User::where(['id' => $id, 'chg' => CHG_VALID_VALUE])->first();
-    }
-    
-    public function update($id, array $data)
-    {
-        return User::whereId($id)->update($data);
-    }
+class AccountRepository extends BaseRepository implements AccountRepositoryInterface {
+        /**
+     * @var Model
+     */
+    protected $model;
 
-    public function delete($id)
+    /**
+     * BaseRepository constructor.
+     *
+     * @param Model $model
+     */
+    public function __construct(User $model)
     {
-        User::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
+        $this->model = $model;
     }
 }

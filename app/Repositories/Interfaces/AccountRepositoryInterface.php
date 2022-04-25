@@ -2,11 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-interface AccountRepositoryInterface
-{
-    public function getDetail($id);
+use App\Repositories\EloquentRepositoryInterface;
 
-    public function update($id, array $data);
-    
-    public function delete($id);
-}
+interface AccountRepositoryInterface extends EloquentRepositoryInterface {}

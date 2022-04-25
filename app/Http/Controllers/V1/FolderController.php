@@ -33,7 +33,10 @@ class FolderController extends BaseController
     public function index() 
     {
         try {
-            $folders = $this->folderRepository->getFolderListByUser();
+            $folders = $this->folderRepository->allBy([
+                'user' => Auth::user()->id,
+                'chg' => CHG_VALID_VALUE
+        ]);
             return $this->sendResponse($folders, 'Get folder list successfully.');
         } catch (\Exception $e) {
             throw $e;
@@ -47,7 +50,7 @@ class FolderController extends BaseController
     public function getFolderDetail($id) 
     {
         try {
-            $folder = $this->folderRepository->getDetail($id);
+            $folder = $this->folderRepository->findById($id);
 
             if($folder) {
                 return $this->sendResponse($folder, 'Get folder detail successfully.');
@@ -95,7 +98,7 @@ class FolderController extends BaseController
     public function update(FolderRequest $request)
     {
         try {
-            $folder = $this->folderRepository->getDetail($request->id);
+            $folder = $this->folderRepository->findById($request->id);
 
             if(!$folder) {
                 return $this->sendError("Folder not found with ID : $request->id!", 404);
@@ -124,13 +127,13 @@ class FolderController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $folder = $this->folderRepository->getDetail($request->id);
+            $folder = $this->folderRepository->findById($request->id);
 
             if(!$folder) {
                 return $this->sendError("Folder not found with ID : $request->id!", 404);
             }
 
-            $this->folderRepository->delete($request->id);
+            $this->folderRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete folder successfully.');
 

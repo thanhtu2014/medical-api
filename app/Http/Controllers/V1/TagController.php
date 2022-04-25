@@ -32,7 +32,10 @@ class TagController extends BaseController
     public function index() 
     {
         try {
-            $tags = $this->tagRepository->getAll();
+            $tags = $this->tagRepository->allBy([
+                    'user' => Auth::user()->id,
+                    'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($tags, 'Get tag list successfully.');
         } catch (\Exception $e) {
@@ -44,10 +47,10 @@ class TagController extends BaseController
     /**
      * @param Request $request
      */
-    public function getTagDetail(Request $request) 
+    public function getTagDetail($id) 
     {
         try {
-            $tag = $this->tagRepository->getDetail($request->id);
+            $tag = $this->tagRepository->findById($id);
 
             if($tag) {
                 return $this->sendResponse($tag, 'Get tag detail successfully.');
@@ -95,7 +98,7 @@ class TagController extends BaseController
     public function update(TagRequest $request)
     {
         try {
-            $tag = $this->tagRepository->getDetail($request->id);
+            $tag = $this->tagRepository->findById($request->id);
 
             if(!$tag) {
                 return $this->sendError("Tag not found with ID : $request->id!", 404);
@@ -127,13 +130,13 @@ class TagController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $tag = $this->tagRepository->getDetail($request->id);
+            $tag = $this->tagRepository->findById($request->id);
 
             if(!$tag) {
                 return $this->sendError("Tag not found with ID : $request->id!", 404);
             }
 
-            $this->tagRepository->delete($request->id);
+            $this->tagRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete tag successfully.');
 

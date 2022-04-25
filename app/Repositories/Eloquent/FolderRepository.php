@@ -3,40 +3,23 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\Interfaces\FolderRepositoryInterface;
-use App\Models\Folder;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\BaseRepository;
+use App\Models\Folder;
 
-class FolderRepository implements FolderRepositoryInterface
-{
-    public function getFolderListByUser()
+class FolderRepository extends BaseRepository implements FolderRepositoryInterface {
+        /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * BaseRepository constructor.
+     *
+     * @param Model $model
+     */
+    public function __construct(Folder $model)
     {
-        return Folder::where(['user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
+        $this->model = $model;
     }
-
-    public function getDetail($id)
-    {
-        return Folder::where(['id' => $id, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
-    }
-
-    public function create(array $data)
-    {
-        return Folder::create($data);
-    }
-
-    public function update($id, array $data)
-    {
-        return Folder::whereId($id)->update($data);
-    }
-
-    public function delete($id)
-    {
-        Folder::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
-    }
-
-    public function getlist($folderId)
-    {
-        return Folder::where('pid', '=', $folderId)->get();
-    
-    }
-
 }
