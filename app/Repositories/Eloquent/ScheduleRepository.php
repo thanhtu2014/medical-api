@@ -2,34 +2,30 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Schedule;
 
-class ScheduleRepository implements ScheduleRepositoryInterface
+class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInterface
 {
-    public function getAll()
+    /**
+     * @var Model
+     */
+    protected $model;
+
+    /**
+     * BaseRepository constructor.
+     *
+     * @param Model $model
+     */
+    public function __construct(Schedule $model)
     {
-        return Schedule::where(['user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE] )->get();
+        $this->model = $model;
     }
 
-    public function getDetail($id)
+    public function getSchedule($date)
     {
-        return Schedule::where(['id' => $id, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
-    }
-
-    public function create(array $scheduleDetails)
-    {
-        return Schedule::create($scheduleDetails);
-    }
-
-    public function update($id, array $newData)
-    {
-        return Schedule::whereId($id)->update($newData);
-    }
-
-    public function delete($id)
-    {
-        Schedule::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
+        return Schedule::whereDate('date', '=',  $date)->where(['chg' => CHG_VALID_VALUE] )->get();
     }
 }
