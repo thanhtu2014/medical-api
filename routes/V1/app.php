@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update.api');
         Route::delete('/schedules/{id}', [ScheduleController::class, 'delete'])->name('schedules.delete.api');
 
-        Route::post('/schedules-month', [ScheduleController::class, 'getScheduleByMonth'])->name('schedules.getScheduleByMonth.api');
+        Route::get('/schedules-list/{date}', [ScheduleController::class, 'getSchedule'])->name('schedules.getSchedule.api');
 
 
         // DOCTOR APIs

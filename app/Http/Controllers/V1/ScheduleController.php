@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 use App\Http\Requests\V1\ScheduleRequest;
+use App\Http\Requests\V1\ScheduleDateRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
 // use DateTime;
@@ -22,7 +23,7 @@ class ScheduleController extends BaseController
      * ScheduleController constructor.
      * @param ScheduleRepository $scheduleRepository
      */
-    public function __construct(ScheduleRepositoryInterface $scheduleRepository) 
+    public function __construct(ScheduleRepositoryInterface $scheduleRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
     }
@@ -30,27 +31,46 @@ class ScheduleController extends BaseController
     /**
      * @param null
      */
-    public function index() 
+    public function index()
     {
         try {
-            $schedules = $this->scheduleRepository->getAll();
+            $schedules = $this->scheduleRepository->all();
 
             return $this->sendResponse($schedules, 'Get schedule list successfully.');
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
-        }   
+        }
     }
-
     /**
      * @param Request $request
      */
-    public function getScheduleDetail(Request $request) 
+    public function getSchedule(Request $request)
     {
         try {
-            $schedule = $this->scheduleRepository->getDetail($request->id);
+            $time = strtotime($request->date);
+            $date= date('Y-m-d', $time);
+            $schedule = $this->scheduleRepository->getSchedule($date);
+            if ($schedule) {
+                return $this->sendResponse($schedule, 'Get schedule on day successfully.');
+            }
+            return $this->sendError("Not found!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
 
-            if($schedule) {
+    
+    /**
+     * @param Request $request
+     */
+    public function getScheduleDetail(Request $request)
+    {
+        try {
+            $schedule = $this->scheduleRepository->findById($request->id);
+
+            if ($schedule) {
                 return $this->sendResponse($schedule, 'Get schedule detail successfully.');
             }
             return $this->sendError("Not found!", 404);
@@ -70,7 +90,8 @@ class ScheduleController extends BaseController
 
             $input = $request->all();
             $input['type'] = SCHEDULE_KEY_VALUE;
-            $input['date']= Carbon::createFromFormat('Y-m-d H:i', $request->date);
+            $input['date'] = Carbon::createFromFormat('Y-m-d H:i', $request->date);
+            $input['color'] = COLOR_DEFAULT_VALUE;
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
@@ -79,10 +100,9 @@ class ScheduleController extends BaseController
 
             $schedule = $this->scheduleRepository->create($input);
 
-            if($schedule) {
+            if ($schedule) {
                 return $this->sendResponse($schedule, 'Create schedule successfully.');
             }
-
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
@@ -95,9 +115,9 @@ class ScheduleController extends BaseController
     public function update(ScheduleRequest $request)
     {
         try {
-            $schedule = $this->scheduleRepository->getDetail($request->id);
+            $schedule = $this->scheduleRepository->findById($request->id);
 
-            if(!$schedule) {
+            if (!$schedule) {
                 return $this->sendError("Schedule not found with ID : $request->id!", 404);
             }
             $request->validated();
@@ -111,10 +131,9 @@ class ScheduleController extends BaseController
 
             $schedule = $this->scheduleRepository->update($request->id, $input);
 
-            if($schedule) {
+            if ($schedule) {
                 return $this->sendResponse($schedule, 'Update schedule successfully.');
             }
-
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
@@ -127,16 +146,15 @@ class ScheduleController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $schedule = $this->scheduleRepository->getDetail($request->id);
+            $schedule = $this->scheduleRepository->findById($request->id);
 
-            if(!$schedule) {
+            if (!$schedule) {
                 return $this->sendError("Schedule not found with ID : $request->id!", 404);
             }
 
-            $this->scheduleRepository->delete($request->id);
+            $this->scheduleRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete schedule successfully.');
-
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);

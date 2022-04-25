@@ -2,15 +2,9 @@
 
 namespace App\Repositories\Interfaces;
 
-interface ScheduleRepositoryInterface
+use App\Repositories\EloquentRepositoryInterface;
+
+interface ScheduleRepositoryInterface extends EloquentRepositoryInterface
 {
-    public function getAll();
-
-    public function getDetail($id);
-
-    public function create(array $scheduleDetails);
-
-    public function update($id, array $newData);
-    
-    public function delete($id);
+    public function getSchedule($date);
 }
