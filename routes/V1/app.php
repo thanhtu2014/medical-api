@@ -33,9 +33,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
 
         // AUTH APIs
         Route::post('/login', [AuthController::class, 'login'])->name('login.api');
-        Route::post('/signup', [AuthController::class, 'signup'])->name('signup.api');
-        Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
-        Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+        // Route::post('/signup', [AuthController::class, 'signup'])->name('signup.api');
+        Route::get('/oauth/google', [GoogleController::class, 'redirectToGoogle']);
+        Route::get('/oauth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
         Route::post('/register', [AuthController::class, 'register'])->name('register.api');
         Route::post('/confirm-code', [AuthController::class, 'confirmCode'])->name('confirm.code.api');

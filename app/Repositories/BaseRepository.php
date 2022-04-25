@@ -61,16 +61,35 @@ class BaseRepository implements EloquentRepositoryInterface
      * @param int $modelId
      * @param array $columns
      * @param array $relations
-     * @param array $appends
      * @return Model
      */
     public function findById(
         int $modelId,
         array $columns = ['*'],
-        array $relations = [],
-        array $appends = []
+        array $relations = []
     ): ?Model {
         return $this->model->select($columns)->with($relations)->whereId($modelId)->Where(['chg' => CHG_VALID_VALUE])->first();
+    }
+
+    /**
+     * Find model by id.
+     *
+     * @param int $modelId
+     * @param array $columns
+     * @param array $relations
+     * @param array $appends
+     * @return Model
+     */
+    public function findBy(
+        array $condition,
+        array $columns = ['*'],
+        array $relations = []
+    ): ?Model {
+        $this->applyConditions($condition);
+
+        return $this->model->with($relations)->get($columns)->first();
+
+        // return $this->model->select($columns)->with($relations)->where($condition)->Where(['chg' => CHG_VALID_VALUE])->first();
     }
 
     /**

@@ -18,8 +18,8 @@ class BaseController extends Controller
     	$response = [
             'success' => true,
             'access_token' => $result,
-            'data' => $data,
             'token_type' => 'Bearer',
+            'data' => $data,
             'status_code' => 200
         ];
 

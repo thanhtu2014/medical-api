@@ -36,44 +36,6 @@ class AuthController extends BaseController
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param UserSignupRequest $request
-     */
-    public function signup(UserSignupRequest $request) 
-    {
-        try {
-            $request->validated();
-
-            // Check user exist
-            $user = $this->userRepository->getUserByEmail($input['email']);
-
-            if ($user) {
-                return $this->sendError('Email is already signuped!', ['error'=>'Existing email.'], 409);
-            }
-        
-            $input = $request->all();
-            $input['password'] = Hash::make($input['password']);
-            $input['key'] = '';
-            $input['token'] = '';
-            $input['new_by'] = NEW_BY_DEFAULT_VALUE;
-            $input['upd_by'] = NEW_BY_DEFAULT_VALUE;
-            $input['upd_ts'] = Carbon::now();
-
-            // Create a new user
-            $user = $this->userRepository->create($input);
-
-            $success =  $user->createToken('Personal Access Token')->plainTextToken;
-
-            //Update tokens
-            $this->userRepository->update($user->id, ['token' => $success]);
-    
-            return $this->sendResponseGetToken($success, 'User register successfully.');
-
-        } catch(Exception $error) {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
-        }
-    }
-
     public function login(UserLoginRequest $request) 
     {
         try {
@@ -92,10 +54,10 @@ class AuthController extends BaseController
                 return $this->sendResponseGetToken($userDetail, $success_token, 'User login successfully.');
             } 
             else{ 
-                return $this->sendError('Unauthorized.', ['error'=>'Wrong username or password!'], 401);
+                return $this->sendError(['error'=>'Wrong username or password!'], 401);
             }
         } catch(Exception $error) {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
+            return $this->sendError(['error'=>'Unauthorised'], 500);
         }
     }
 
@@ -104,16 +66,21 @@ class AuthController extends BaseController
         DB::beginTransaction();
         try {
             $request->validated();
+            
+            //get random code
             $code = generate_unique_code();
 
             $input = $request->all();
             $input['type'] = LOGIN_MAIL_TYPE_VALUE;
             $input['name'] = USER_NAME_DEFAULT_VALUE;
+            $input['temail'] = '';
+            $input['gender'] = '';
             $input['password'] = Hash::make(PASSWORD_DEFAULT_VALUE);
             $input['key']   = '';
             $input['token'] = '';
             $input['code']  = $code;
             $input['plan']  = FREE_PLAN_VALUE;
+            $input['progress']  = '';
             $input['status'] = USER_WAITING_STATUS_KEY_VALUE;
             $input['new_by'] = NEW_USER_DEFAULT_VALUE;
             $input['upd_by'] = NEW_USER_DEFAULT_VALUE;
@@ -132,7 +99,7 @@ class AuthController extends BaseController
             }
 
             DB::commit();
-            return $this->sendResponse($user, 'Send Mail successfully.');
+            return $this->sendResponse([], 'Send Mail successfully.');
         } catch(Exception $error) {
             DB::rollBack();
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
@@ -143,7 +110,7 @@ class AuthController extends BaseController
     {
         try {
             $request->validated();
-            $user = $this->userRepository->getUserByCode($request->code);
+            $user = $this->userRepository->findBy(['code' => $request->code, 'chg' => CHG_VALID_VALUE]);
 
             if($user) {
                 $success =  $user->createToken('Personal Access Token')->plainTextToken;
@@ -155,9 +122,9 @@ class AuthController extends BaseController
                 return $this->sendResponseGetToken($user, $success, 'Verify code successfully.');
             }
 
-            return $this->sendError('User not found!', ['error'=>'User not found!'], 404);
+            return $this->sendError(['error'=>'User not found!'], 404);
         } catch(Exception $error) {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
+            return $this->sendError(['error'=>'Unauthorised'], 500);
         }
     }
 
@@ -165,6 +132,6 @@ class AuthController extends BaseController
     {
         Auth::user()->token()->delete();
         $response = ['message' => 'You have been successfully logged out!'];
-        return $this->sendResponseGetToken([], $response, 200);
+        return $this->sendResponse([], $response, 200);
     }
 }

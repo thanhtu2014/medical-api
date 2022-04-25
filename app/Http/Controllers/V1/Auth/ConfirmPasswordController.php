@@ -28,7 +28,7 @@ class ConfirmPasswordController extends BaseController
         try {
             $request->validated();
 
-            $user = $this->userRepository->getUserById($request->user_id);
+            $user = $this->userRepository->findById($request->user_id);
 
             if($user) {
                 $userUpdate = $this->userRepository->update(
@@ -38,14 +38,14 @@ class ConfirmPasswordController extends BaseController
                         'status' => USER_AUTHENTICATED_STATUS_KEY_VALUE
                     ]); 
 
-                $userDetail = $this->userRepository->getUserById($request->user_id);
+                $userDetail = $this->userRepository->findById($request->user_id);
 
                 return $this->sendResponseGetToken($userDetail, $userDetail->token, 'Update password successfully.');
             }
 
-            return $this->sendError('User not found!', ['error'=>'User not found!'], 404);
+            return $this->sendError(['error'=>'User not found!'], 404);
         } catch(Exception $error) {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
+            return $this->sendError(['error'=>'Unauthorised'], 500);
         }
     }
 }

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('gender', 24);
             $table->string('remark', 1024)->nullable();
             $table->string('status', 24);
-            $table->string('progress', 24);
+            $table->string('progress', 24)->default(null);
             $table->char('chg', 1)->default('Y');
             $table->string('new_by', 128);
             $table->dateTime('new_ts', $precision = 0)->useCurrent();
