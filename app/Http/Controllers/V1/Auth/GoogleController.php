@@ -24,31 +24,16 @@ class GoogleController extends BaseController
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-        
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function handleGoogleCallback()
+    public function create(Request $request) 
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $googleUser = $request->input();
         } catch (Exception $e) {
             return $this->sendError(['error'=>$e->getMessage()], 500);
         }
 
         // check for email in returned user
-        return empty($googleUser->email)
+        return empty($googleUser['email'])
             ? $this->sendError(["error" => "No email id returned from google provider."], 404)
             : $this->loginOrCreateAccount($googleUser);
     }
@@ -57,17 +42,17 @@ class GoogleController extends BaseController
     {
         try {
             // check for already has account
-            $user = $this->userRepository->findBy(['email' => $googleUser->email]);
+            $user = $this->userRepository->findBy(['email' => $googleUser['email']]);
 
             // if user already found
             if($user) {
-
-                // update the avatar and provider that might have changed
+                // update the photo and provider that might have changed
                 $input = [
                     'type' => LOGIN_GOOGLE_TYPE_VALUE,
-                    'google_id'=> $googleUser->id,
-                    'profile_photo_path' => $googleUser->avatar,
-                    'token' => $googleUser->token,
+                    'temail' => $googleUser['email'],
+                    'google_id'=> $googleUser['id'],
+                    'profile_photo_path' => $googleUser['photo'],
+                    'token' => $googleUser['token'],
                     'upd_ts' => Carbon::now()
                 ];
 
@@ -82,18 +67,18 @@ class GoogleController extends BaseController
             } else {
                 $input = [
                     'type' => LOGIN_GOOGLE_TYPE_VALUE,
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'temail' => $googleUser->getEmail(),
+                    'name' => $googleUser['name'],
+                    'email' => $googleUser['email'],
+                    'temail' => $googleUser['email'],
                     'password' =>Hash::make(USER_PASSWORD_DEFAULT_VALUE),
                     'key' => '',
-                    'token' => $googleUser->token,
+                    'token' => $googleUser['token'],
                     'plan' => FREE_PLAN_VALUE,
                     'gender' => '',
                     'progress' => '',
                     'status' => USER_WAITING_STATUS_KEY_VALUE,
-                    'google_id'=> $googleUser->id,
-                    'profile_photo_path' => $googleUser->avatar,
+                    'google_id'=> $googleUser['id'],
+                    'profile_photo_path' => $googleUser['photo'],
                     'new_by' => 'Admin',
                     'upd_by' => 'Admin',
                     'upd_ts' => Carbon::now()
