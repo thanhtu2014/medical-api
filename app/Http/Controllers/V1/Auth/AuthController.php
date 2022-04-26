@@ -73,7 +73,7 @@ class AuthController extends BaseController
             $input = $request->all();
             $input['type'] = LOGIN_MAIL_TYPE_VALUE;
             $input['name'] = USER_NAME_DEFAULT_VALUE;
-            $input['temail'] = '';
+            $input['temail'] = $request->email;
             $input['gender'] = '';
             $input['password'] = Hash::make(PASSWORD_DEFAULT_VALUE);
             $input['key']   = '';

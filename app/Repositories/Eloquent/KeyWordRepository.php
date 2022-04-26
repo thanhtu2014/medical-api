@@ -6,30 +6,20 @@ use App\Repositories\Interfaces\KeywordRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\KeyWord;
 
-class KeywordRepository implements KeywordRepositoryInterface
+class KeywordRepository extends BaseRepository implements KeywordRepositoryInterface 
 {
-    public function getListByType($type)
-    {
-        return KeyWord::where(['type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->get();
-    }
+    /**
+     * @var Model
+     */
+    protected $model;
 
-    public function getDetail($id, $type)
+    /**
+     * BaseRepository constructor.
+     *
+     * @param Model $model
+     */
+    public function __construct(KeyWord $model)
     {
-        return KeyWord::where(['id' => $id, 'type' => $type, 'user' => Auth::user()->id, 'chg' => CHG_VALID_VALUE])->first();
-    }
-
-    public function create(array $data)
-    {
-        return KeyWord::create($data);
-    }
-
-    public function update($id, array $data)
-    {
-        return KeyWord::whereId($id)->update($data);
-    }
-
-    public function delete($id)
-    {
-        KeyWord::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
+        $this->model = $model;
     }
 }
