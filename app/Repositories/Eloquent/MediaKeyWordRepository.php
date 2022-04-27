@@ -2,19 +2,25 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\BaseRepository;
+use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MediaKeyWord;
 
-class MediaKeyWordRepository implements MediaKeyWordRepositoryInterface
+class MediaKeywordRepository extends BaseRepository implements MediaKeywordRepositoryInterface
 {
-    public function store(array $data)
-    {
-        return MediaKeyWord::create($data);
-    }
+    /**
+     * @var Model
+     */
+    protected $model;
 
-    public function delete($id)
+    /**
+     * BaseRepository constructor.
+     *
+     * @param Model $model
+     */
+    public function __construct(MediaKeyWord $model)
     {
-        MediaKeyWord::where('id', $id)->update(['chg' => CHG_DELETE_VALUE]);
+        $this->model = $model;
     }
 }

@@ -13,12 +13,12 @@ use App\Repositories\Eloquent\PeopleRepository;
 use App\Repositories\Interfaces\PeopleRepositoryInterface;
 use App\Repositories\Eloquent\FolderRepository;
 use App\Repositories\Interfaces\FolderRepositoryInterface;
-use App\Repositories\Eloquent\KeyWordRepository;
-use App\Repositories\Interfaces\KeyWordRepositoryInterface;
+use App\Repositories\Eloquent\KeywordRepository;
+use App\Repositories\Interfaces\KeywordRepositoryInterface;
 use App\Repositories\Eloquent\FamilyRepository;
 use App\Repositories\Interfaces\FamilyRepositoryInterface;
-use App\Repositories\Eloquent\MediaKeyWordRepository;
-use App\Repositories\Interfaces\MediaKeyWordRepositoryInterface;
+use App\Repositories\Eloquent\MediaKeywordRepository;
+use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
 use App\Repositories\Eloquent\ScheduleRepository;
 use App\Repositories\Interfaces\ScheduleRepositoryInterface;
 use App\Repositories\Eloquent\TagRepository;
@@ -56,13 +56,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            KeyWordRepositoryInterface::class,
-            KeyWordRepository::class
+            KeywordRepositoryInterface::class,
+            KeywordRepository::class
         );
 
         $this->app->bind(
-            MediaKeyWordRepositoryInterface::class,
-            MediaKeyWordRepository::class
+            MediaKeywordRepositoryInterface::class,
+            MediaKeywordRepository::class
         );
 
         $this->app->bind(

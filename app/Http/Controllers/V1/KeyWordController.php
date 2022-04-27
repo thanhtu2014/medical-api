@@ -25,11 +25,6 @@ class KeywordController extends BaseController
     private $mediaKeywordRepository;
 
     /**
-     * @var type
-     */
-    private $type;
-
-    /**
      * KeywordController constructor.
      * @param KeywordRepositoryInterface $keywordRepository
      * @param MediaKeywordRepositoryInterface $mediaKeywordRepository
@@ -40,7 +35,6 @@ class KeywordController extends BaseController
     ) {
         $this->keyWordRepository = $keywordRepository;
         $this->mediaKeyWordRepository = $mediaKeywordRepository;
-        $this->type = get_current_action_view_type();
     }
 
     /**
@@ -49,7 +43,11 @@ class KeywordController extends BaseController
     public function index()
     {
         try {
-            $keywords = $this->keyWordRepository->getListByType($this->type);
+            $keywords = $this->keyWordRepository->allBy([
+                'type' => MEDICINE_KEY_VALUE,
+                'user' => Auth::user()->id,
+                'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($keywords, 'Get data list successfully.');
         } catch (\Exception $e) {
@@ -64,7 +62,7 @@ class KeywordController extends BaseController
     public function detail($id)
     {
         try {
-            $keyWord = $this->keyWordRepository->getDetail($id, $this->type);
+            $keyWord = $this->keyWordRepository->findById($id);
 
             if($keyWord) {
                 return $this->sendResponse($keyWord, 'Get people detail successfully.');

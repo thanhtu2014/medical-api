@@ -25,12 +25,12 @@ class KeywordRequest extends BaseAPIRequest
     {
         return [
             'image' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'name' => 'min:3|max:128',
-            'type' => 'min:3|max:24',
+            'name'  => 'min:3|max:128',
+            'type'  => 'min:3|max:24',
             'color' => 'max:128',
-            'user' => 'max:128',
-            'vx01' => 'max:128',
-            'vx02' => 'max:128',
+            'user'  => 'max:128',
+            'vx01'  => 'max:128',
+            'vx02'  => 'max:128',
             'remark' => 'min:3|max:1024'
         ];
     }
@@ -39,9 +39,9 @@ class KeywordRequest extends BaseAPIRequest
     {
         return [
             'name.required' => 'Name is required!',
-            'name.min' => 'Name must be at least 3 characters!',
-            'remark.min' => 'Remark must be at least 6 characters!',
-            'remark.max' => 'Remark must be at least 1024 characters!',
+            'name.min'      => 'Name must be at least 3 characters!',
+            'remark.min'    => 'Remark must be at least 6 characters!',
+            'remark.max'    => 'Remark must be at least 1024 characters!',
         ];
     }
 }

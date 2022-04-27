@@ -2,15 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-interface KeywordRepositoryInterface
-{
-    public function getListByType($type);
+use App\Repositories\EloquentRepositoryInterface;
 
-    public function getDetail($id, $type);
-
-    public function create(array $data);
-
-    public function update($id, array $data);
-    
-    public function delete($id);
-}
+interface KeywordRepositoryInterface extends EloquentRepositoryInterface {}

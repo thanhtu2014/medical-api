@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\KeywordRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Models\KeyWord;

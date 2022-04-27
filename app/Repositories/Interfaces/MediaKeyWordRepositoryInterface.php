@@ -2,9 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-interface MediaKeyWordRepositoryInterface
-{
-    public function store(array $data);
+use App\Repositories\EloquentRepositoryInterface;
 
-    public function delete($id);
-}
+interface MediaKeywordRepositoryInterface extends EloquentRepositoryInterface {}
