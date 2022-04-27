@@ -113,10 +113,12 @@ class AuthController extends BaseController
             $user = $this->userRepository->findBy(['code' => $request->code, 'chg' => CHG_VALID_VALUE]);
 
             if($user) {
-                $success =  $user->createToken('Personal Access Token')->plainTextToken;
+                $_user = Auth::user();
+                $success_token = $userToken->createToken('Personal Access Token')->plainTextToken;
+
                 $this->userRepository->update(
                     $user->id, [
-                        'token' => $success
+                        'token' => $success_token
                     ]);
 
                 return $this->sendResponseGetToken($user, $success, 'Verify code successfully.');

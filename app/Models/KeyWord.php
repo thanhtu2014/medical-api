@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class KeyWord extends Authenticatable
+class Keyword extends Authenticatable
 {
     protected $table = 'keywords';
 
@@ -36,5 +36,10 @@ class KeyWord extends Authenticatable
      * @var array
      */
     protected $hidden = [];
+
+    public function mediaKeyword()
+    {
+        return $this->hasOne('App\Models\MediaKeyword', 'keyword');
+    }
 
 }

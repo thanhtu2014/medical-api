@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\KeywordRepositoryInterface;
 use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
-use App\Http\Requests\V1\KeyWordRequest;
+use App\Http\Requests\V1\KeywordRequest;
 use App\Http\Controllers\BaseController;
 use Carbon\Carbon;
+use Validator;
+use Storage;
 use DB;
 
 class KeywordController extends BaseController
@@ -33,8 +35,8 @@ class KeywordController extends BaseController
         KeywordRepositoryInterface $keywordRepository,
         MediaKeywordRepositoryInterface $mediaKeywordRepository
     ) {
-        $this->keyWordRepository = $keywordRepository;
-        $this->mediaKeyWordRepository = $mediaKeywordRepository;
+        $this->keywordRepository = $keywordRepository;
+        $this->mediaKeywordRepository = $mediaKeywordRepository;
     }
 
     /**
@@ -43,7 +45,7 @@ class KeywordController extends BaseController
     public function index()
     {
         try {
-            $keywords = $this->keyWordRepository->allBy([
+            $keywords = $this->keywordRepository->allBy([
                 'type' => MEDICINE_KEY_VALUE,
                 'user' => Auth::user()->id,
                 'chg' => CHG_VALID_VALUE
@@ -62,10 +64,10 @@ class KeywordController extends BaseController
     public function detail($id)
     {
         try {
-            $keyWord = $this->keyWordRepository->findById($id);
+            $keyword = $this->keywordRepository->findById($id, ['*'], ['mediaKeyword']);
 
-            if($keyWord) {
-                return $this->sendResponse($keyWord, 'Get people detail successfully.');
+            if($keyword) {
+                return $this->sendResponse($keyword, 'Get medicine detail successfully.');
             }
 
             return $this->sendError("Not found!", 404);
@@ -76,42 +78,58 @@ class KeywordController extends BaseController
     }
 
     /**
-     *  @param KeyWordRequest $request
+     *  @param KeywordRequest $request
      */
-    public function store(KeyWordRequest $request)
+    public function store(Request $request)
     {
-        dd($request->file('image'));
         DB::beginTransaction();
+
         try {
-            $request->validated();
+            $validator = Validator::make($request->all(),[ 
+                'file' => 'required|image:jpeg,png,jpg,gif,svg|max:2048',
+                'name'  => 'required|min:3|max:128',
+                'vx01'  => 'required|max:128',
+                'vx02'  => 'required|max:128',
+                'remark' => 'min:3|max:1024'
+            ]);
+    
+            if($validator->fails()) {          
+                return $this->sendError(['error'=>$validator->errors()], 401);                     
+            }
 
             $input = $request->all();
             $input['type'] = MEDICINE_KEY_VALUE;
             $input['color'] = $request->input('color') ? $request->input('color') : 'Nope';
+            $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            dd($request->file('file'));
+            $keyword = $this->keywordRepository->create($input);
 
-            // $keyWord = $this->keyWordRepository->create($input);
+            if ($file = $request->file('file') && $keyword) {
+                $path = Storage::putFile('keywords', $request->file('file'));
+                $name = $request->file->getClientOriginalName();
+                $mine = $request->file->getClientmimeType();
+                $ext = $request->file->getExtension();
+    
+                //store your file into directory and db
+                $input_media['keyword'] = $keyword->id;
+                $input_media['fpath']   = $path;
+                $input_media['fname']   = $name;
+                $input_media['fdisk']   = $path;
+                $input_media['name']    = $name;
+                $input_media['mime']    = $mine;
+                $input_media['fext']    = $ext;
+                $input_media['new_by']  = Auth::user()->id;
+                $input_media['upd_by']  = Auth::user()->id;
+                $input_media['upd_ts']  = Carbon::now();
 
-            // if($keyWord) {
-            //     $files = $request->file('fileName');
-            //     $name = $files->getClientOriginalName();
-            //     $path = $files->store('storage/app/public/medicines');
-
-            //     $input_media['keyword'] = $keyWord->id;
-            //     $input_media['fpath'] = $path;
-            //     $input_media['fname'] = $name;
-            //     $mediaKeyWord = $this->mediaKeyWordRepository->create($input_media);
-            // }
-
-            // if($mediaKeyWord) {
-            //     return $this->sendResponse($hospital, 'Create hospital successfully.');
-            // }
+                $mediaKeyword = $this->mediaKeywordRepository->create($input_media);
+            }
 
             DB::commit();
+            return $this->sendResponse($keyword, 'Create medicine successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -120,12 +138,12 @@ class KeywordController extends BaseController
     }
 
     /**
-     *  @param KeyWordRequest $request
+     *  @param KeywordRequest $request
      */
-    public function update(KeyWordRequest $request)
+    public function update(KeywordRequest $request)
     {
         try {
-            $hospital = $this->keyWordRepository->getDetail($request->id);
+            $hospital = $this->keywordRepository->getDetail($request->id);
 
             if(!$hospital) {
                 return $this->sendError("Hospital not found with ID : $request->id!", 404);
@@ -137,7 +155,7 @@ class KeywordController extends BaseController
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $hospital = $this->keyWordRepository->update($request->id, $input);
+            $hospital = $this->keywordRepository->update($request->id, $input);
 
             if($hospital) {
                 return $this->sendResponse($hospital, 'Update hospital successfully.');
@@ -155,15 +173,15 @@ class KeywordController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->keyWordRepository->getDetail($request->id);
+            $medicine = $this->keywordRepository->findById($request->id);
 
-            if(!$hospital) {
-                return $this->sendError("Hospital not found with ID : $request->id!", 404);
+            if(!$medicine) {
+                return $this->sendError("Medicine not found with ID : $request->id!", 404);
             }
 
-            $this->keyWordRepository->delete($request->id);
+            $this->keywordRepository->deleteById($request->id);
 
-            return $this->sendResponse([], 'Delete hospital successfully.');
+            return $this->sendResponse([], 'Delete medicine successfully.');
 
         } catch (\Exception $e) {
             throw $e;

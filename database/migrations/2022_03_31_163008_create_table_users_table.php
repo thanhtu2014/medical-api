@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('type', 24);
             $table->string('email', 255)->unique();
-            $table->string('temail', 255)->unique();
+            $table->string('temail', 255)->nullable();
             $table->string('name', 128);
             $table->string('password', 1024);
             $table->rememberToken();
             $table->string('key', 1024);
             $table->string('token', 1024);
-            $table->dateTime('expired', $precision = 0)->nullable();
+            $table->dateTime('expired', $precision = 0);
             $table->string('plan', 24);
             $table->string('code', 6)->nullable();
             $table->string('gender', 24);

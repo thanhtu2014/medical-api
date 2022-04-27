@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class MediaKeyWord extends Authenticatable
+class MediaKeyword extends Authenticatable
 {
     protected $table = 'media_x_keyword';
 
