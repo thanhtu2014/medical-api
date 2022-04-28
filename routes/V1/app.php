@@ -16,6 +16,7 @@ use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 use App\Http\Controllers\V1\ScheduleController;
 use App\Http\Controllers\V1\TagController;
 use App\Http\Controllers\V1\AccountController;
+use App\Http\Controllers\V1\ShareController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,10 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/accounts/{id}', [AccountController::class, 'detail'])->name('accounts.detail.api');
         Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update.api');
         Route::delete('/accounts/{id}', [AccountController::class, 'delete'])->name('accounts.delete.api');
+
+        //SHARES APIs
+        Route::post('/shares', [ShareController::class, 'share'])->name('shares.share.api');
+        Route::delete('/shares/{id}', [ShareController::class, 'delete'])->name('shares.delete.api');
     });
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Models\Share;
 
 if (!function_exists('get_current_action_view_type')) {
     /**
@@ -63,5 +64,24 @@ if (!function_exists('generate_unique_code')) {
         } while (User::where("code", "=", $code)->first());
   
         return $code;
+    }
+}
+
+if (!function_exists('generate_status')) {
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    function generate_status() 
+    {
+        do {
+            $status = 'テキストが入りますテキストが入りますテキストが入り
+            ますテキストが入りますテキストが入りますテキストが
+            入りますテキストが入りますテキストが入ります';
+        } while (Share::where("status", "=", $status)->first());
+  
+        return $status;
+
     }
 }

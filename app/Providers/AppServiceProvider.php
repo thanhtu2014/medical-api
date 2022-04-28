@@ -25,6 +25,10 @@ use App\Repositories\Eloquent\TagRepository;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\Eloquent\AccountRepository;
 use App\Repositories\Interfaces\AccountRepositoryInterface;
+use App\Repositories\Eloquent\ShareRepository;
+use App\Repositories\Interfaces\ShareRepositoryInterface;
+use App\Repositories\Eloquent\DoctorRepository;
+use App\Repositories\Interfaces\DoctorRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -83,6 +87,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AccountRepositoryInterface::class,
             AccountRepository::class
+        );
+
+        $this->app->bind(
+            ShareRepositoryInterface::class,
+            ShareRepository::class
+        );
+
+        $this->app->bind(
+            DoctorRepositoryInterface::class,
+            DoctorRepository::class
+        );
+
+        $this->app->bind(
+            FamilyRepositoryInterface::class,
+            FamilyRepository::class    
         );
     }
 
