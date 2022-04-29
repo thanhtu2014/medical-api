@@ -104,8 +104,7 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/tags/{id}', [TagController::class, 'delete'])->name('tags.delete.api');
 
         //ACCOUNT APIs
-        Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.api');
-        Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store.api');
+        Route::get('/accounts/search', [AccountController::class, 'searchAccount'])->name('accounts.searchAccount.api');
         Route::get('/accounts/{id}', [AccountController::class, 'detail'])->name('accounts.detail.api');
         Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update.api');
         Route::delete('/accounts/{id}', [AccountController::class, 'delete'])->name('accounts.delete.api');
