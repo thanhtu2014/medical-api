@@ -29,7 +29,12 @@ use App\Repositories\Eloquent\ShareRepository;
 use App\Repositories\Interfaces\ShareRepositoryInterface;
 use App\Repositories\Eloquent\DoctorRepository;
 use App\Repositories\Interfaces\DoctorRepositoryInterface;
-
+use App\Repositories\Eloquent\RecordRepository;
+use App\Repositories\Interfaces\RecordRepositoryInterface;
+use App\Repositories\Eloquent\RecordItemRepository;
+use App\Repositories\Interfaces\RecordItemRepositoryInterface;
+use App\Repositories\Eloquent\MediaRepository;
+use App\Repositories\Interfaces\MediaRepositoryInterface;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -102,6 +107,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             FamilyRepositoryInterface::class,
             FamilyRepository::class    
+        );
+
+        $this->app->bind(
+            RecordRepositoryInterface::class,
+            RecordRepository::class
+        );
+
+        $this->app->bind(
+            RecordItemRepositoryInterface::class,
+            RecordItemRepository::class
+        );
+
+        $this->app->bind(
+            MediaRepositoryInterface::class,
+            MediaRepository::class
         );
     }
 
