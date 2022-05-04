@@ -34,7 +34,10 @@ class ScheduleController extends BaseController
     public function index()
     {
         try {
-            $schedules = $this->scheduleRepository->all();
+            $schedules = $this->scheduleRepository->allBy([
+                'user' => Auth::user()->id,
+                'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($schedules, 'Get schedule list successfully.');
         } catch (\Exception $e) {
