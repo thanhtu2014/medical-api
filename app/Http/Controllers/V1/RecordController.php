@@ -41,6 +41,24 @@ class RecordController extends BaseController
     }
 
     /**
+     * @param Request $request
+     */
+    public function searchRecord(Request $request) 
+    {     
+        try {
+            $recordSearch = $this->recordRepository->Search($request);
+            
+            if($recordSearch) {
+                return $this->sendResponse($recordSearch, 'Search record successfully.');
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+    /**
      *  @param RecordRequest $request
      */
     public function store(RecordRequest $request)

@@ -113,12 +113,13 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::post('/shares', [ShareController::class, 'share'])->name('shares.share.api');
         Route::delete('/shares/{id}', [ShareController::class, 'delete'])->name('shares.delete.api');
 
-
+        //RECORD
         Route::get('/records', [RecordController::class, 'index'])->name('records.api');
         Route::post('/records', [RecordController::class, 'store'])->name('records.store.api');
         Route::get('/records/{id}', [RecordController::class, 'detail'])->name('records.detail.api');
         Route::put('/records/{id}', [RecordController::class, 'update'])->name('records.update.api');
         Route::delete('/records/{id}', [RecordController::class, 'delete'])->name('records.delete.api');
+        Route::get('/records/search', [RecordController::class, 'searchRecord'])->name('accounts.searchRecord.api');
 
         //RECORD_ITEM APIs
         Route::get('/record-item', [RecordItemController::class, 'index'])->name('record-item.api');
