@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\BaseRepository;
 use App\Models\User;
 use Illuminate\Http\Request;
+use DB;
 
 class AccountRepository extends BaseRepository implements AccountRepositoryInterface {
         /**
@@ -27,13 +28,19 @@ class AccountRepository extends BaseRepository implements AccountRepositoryInter
     public function Search(Request $request)
     {
         $param = $request->q;
-        // dd($request->all());
-            
-        $account = User::where('name', 'like', "%".$param."%")
-            ->orwhere('email', 'like', "%".$param."%")
-            ->get();
 
-        return $account;
+            $account =DB::table('users')
+                ->orWhere(function ($query) use ($param) {
+                    $query->where('name', 'like', '%'.$param. '%' )
+                        ->where(['chg' => CHG_VALID_VALUE]);
+                })
+                ->orWhere(function ($query) use ($param) {
+                    $query->where('email', 'like', '%'.$param. '%' )
+                        ->where(['chg' => CHG_VALID_VALUE]);
+                })
+                ->get(); 
+            
+            return $account;
     }
 
 }
