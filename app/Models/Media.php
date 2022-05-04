@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class People extends Authenticatable
-{
-    protected $table = 'peoples';
 
+class Media extends Authenticatable
+{
+    protected $table = 'medias';
     public $timestamps = false;
 
     /**
@@ -16,26 +18,18 @@ class People extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'type',
-        'org',
-        'dept',
+        'record_item',
+        'fpath',
+        'fname',
+        'fdisk',
         'name',
-        'doctor',
-        'user',
-        'post',
-        'pref',
-        'pref_code',
-        'address',
-        'xaddress',
-        'remark',
-        'phone',
-        'email',
+        'mine',
+        'mine',
         'chg',
         'new_by',
         'new_ts',
         'upd_by',
-        'upd_ts',
-        'google_id'
+        'upd_ts'
     ];
 
     /**
@@ -44,8 +38,4 @@ class People extends Authenticatable
      * @var array
      */
     protected $hidden = [];
-
-    public function share(){
-        return $this->hasMany(Share::class , 'to');
-    }
 }

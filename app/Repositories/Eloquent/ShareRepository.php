@@ -3,12 +3,13 @@
 namespace App\Repositories\Eloquent;
 
 use App\Repositories\BaseRepository;
-use App\Repositories\Interfaces\RecordRepositoryInterface;
-use App\Models\Record;
+use App\Repositories\Interfaces\ShareRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Share;
 
-class RecordRepository extends BaseRepository implements RecordRepositoryInterface
+class ShareRepository extends BaseRepository implements ShareRepositoryInterface
 {
-/**
+    /**
      * @var Model
      */
     protected $model;
@@ -18,7 +19,7 @@ class RecordRepository extends BaseRepository implements RecordRepositoryInterfa
      *
      * @param Model $model
      */
-    public function __construct(Record $model)
+    public function __construct(Share $model)
     {
         $this->model = $model;
     }

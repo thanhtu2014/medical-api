@@ -16,7 +16,10 @@ use App\Http\Controllers\V1\Auth\ConfirmPasswordController;
 use App\Http\Controllers\V1\ScheduleController;
 use App\Http\Controllers\V1\TagController;
 use App\Http\Controllers\V1\AccountController;
-
+use App\Http\Controllers\V1\ShareController;
+use App\Http\Controllers\V1\RecordController;
+use App\Http\Controllers\V1\RecordItemController;
+use App\Http\Controllers\V1\MediaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -101,13 +104,40 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/tags/{id}', [TagController::class, 'delete'])->name('tags.delete.api');
 
         //ACCOUNT APIs
-        Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.api');
-        Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store.api');
+        Route::get('/accounts/search', [AccountController::class, 'searchAccount'])->name('accounts.searchAccount.api');
         Route::get('/accounts/{id}', [AccountController::class, 'detail'])->name('accounts.detail.api');
         Route::put('/accounts/{id}', [AccountController::class, 'update'])->name('accounts.update.api');
         Route::delete('/accounts/{id}', [AccountController::class, 'delete'])->name('accounts.delete.api');
+
+        //SHARES APIs
+        Route::post('/shares', [ShareController::class, 'share'])->name('shares.share.api');
+        Route::delete('/shares/{id}', [ShareController::class, 'delete'])->name('shares.delete.api');
+
+
+        Route::get('/records', [RecordController::class, 'index'])->name('records.api');
+        Route::post('/records', [RecordController::class, 'store'])->name('records.store.api');
+        Route::get('/records/{id}', [RecordController::class, 'detail'])->name('records.detail.api');
+        Route::put('/records/{id}', [RecordController::class, 'update'])->name('records.update.api');
+        Route::delete('/records/{id}', [RecordController::class, 'delete'])->name('records.delete.api');
+
+        //RECORD_ITEM APIs
+        Route::get('/record-item', [RecordItemController::class, 'index'])->name('record-item.api');
+        Route::post('/record-item', [RecordItemController::class, 'store'])->name('record-item.store.api');
+        Route::get('/record-item/{id}', [RecordItemController::class, 'detail'])->name('record-item.detail.api');
+        Route::put('/record-item/{id}', [RecordItemController::class, 'update'])->name('record-item.update.api');
+        Route::delete('/record-item/{id}', [RecordItemController::class, 'delete'])->name('record-item.delete.api');
+
+        Route::post('/record-items', [RecordItemController::class, 'getItem'])->name('record-item.getItem.api');
+        //MEDIA APIs
+        Route::get('/medias', [MediaController::class, 'index'])->name('medias.api');
+        Route::post('/medias', [MediaController::class, 'store'])->name('medias.store.api');
+        Route::get('/medias/{id}', [MediaController::class, 'detail'])->name('medias.detail.api');
+        Route::put('/medias/{id}', [MediaController::class, 'update'])->name('medias.update.api');
+        Route::delete('/medias/{id}', [MediaController::class, 'delete'])->name('medias.delete.api');
     });
 
+
+    
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
