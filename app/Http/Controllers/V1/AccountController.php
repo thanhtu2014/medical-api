@@ -35,7 +35,6 @@ class AccountController extends BaseController
      */
     public function detail($id) 
     {
-        dd('dđ');
         try {
             $account = $this->accountRepository->findById($id);
 
@@ -54,11 +53,21 @@ class AccountController extends BaseController
      * @param Request $request
      */
     public function searchAccount(Request $request) 
-    {         
-        $account = $this->accountRepository->Search($request);
-        
-        return $this->sendResponse($account, 'Search account successfully.');    
+    {     
+        try {
+            // dd($request->all());
+            $account = $this->accountRepository->Search($request);
+            
+            if($account) {
+                return $this->sendResponse($account, 'Search account successfully.');
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
     }
+
     /**
      *  @param AccountRequest $request
      */
@@ -107,7 +116,7 @@ class AccountController extends BaseController
         try {
             $request->validated();
             $account = $this->accountRepository->findBy(['code' => $request->code, 'chg' => CHG_VALID_VALUE]);
-            dd($account);
+            
             if($account) {
                 $success =  $account->createToken('Personal Access Token')->plainTextToken;
                 $this->userRepository->update(
@@ -126,20 +135,20 @@ class AccountController extends BaseController
     public function delete(Request $request)
     {
         try {
-            $hospital = $this->hospitalRepository->findById($request->id);
+            $account = $this->accountRepository->findById($request->id);
 
-            if(!$hospital) {
-                return $this->sendError("Hospital not found with ID : $request->id!", 404);
+            if(!$account) {
+                return $this->sendError("Account not found with ID : $request->id!", 404);
             }
 
-            $this->hospitalRepository->deleteById($request->id);
+            $this->accountRepository->deleteById($request->id);
 
-            return $this->sendResponse([], 'Delete hospital successfully.');
+            return $this->sendResponse([], 'Delete account successfully.');
 
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
         }
     }
-    
 }
+    
