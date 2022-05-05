@@ -20,6 +20,7 @@ use App\Http\Controllers\V1\ShareController;
 use App\Http\Controllers\V1\RecordController;
 use App\Http\Controllers\V1\RecordItemController;
 use App\Http\Controllers\V1\MediaController;
+use App\Http\Controllers\V1\FavoriteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -135,6 +136,11 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/medias/{id}', [MediaController::class, 'detail'])->name('medias.detail.api');
         Route::put('/medias/{id}', [MediaController::class, 'update'])->name('medias.update.api');
         Route::delete('/medias/{id}', [MediaController::class, 'delete'])->name('medias.delete.api');
+
+        //FAVORITE APIs
+        Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.api');
+        Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store.api');
+        Route::delete('/favorites/{id}', [FavoriteController::class, 'delete'])->name('favorites.delete.api');
     });
 
 
