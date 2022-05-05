@@ -131,7 +131,7 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/record-item/{id}', [RecordItemController::class, 'update'])->name('record-item.update.api');
         Route::delete('/record-item/{id}', [RecordItemController::class, 'delete'])->name('record-item.delete.api');
 
-        Route::post('/record-items', [RecordItemController::class, 'getItem'])->name('record-item.getItem.api');
+        Route::get('/list-items/{id}', [RecordItemController::class, 'getItem'])->name('record-item.getItem.api');
         //MEDIA APIs
         Route::get('/medias', [MediaController::class, 'index'])->name('medias.api');
         Route::post('/medias', [MediaController::class, 'store'])->name('medias.store.api');
