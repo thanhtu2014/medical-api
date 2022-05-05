@@ -73,7 +73,7 @@ class FolderController extends BaseController
 
             $input = $request->all();
             $input['type'] = FOLDER_TYPE_KEY_VALUE;
-            $input['color'] = $request->input('color') ? $request->input('color') : 'COLOR_DEFAULT_VALUE;';
+            $input['color'] = $request->input('color') ? $request->input('color') : COLOR_DEFAULT_VALUE;
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;

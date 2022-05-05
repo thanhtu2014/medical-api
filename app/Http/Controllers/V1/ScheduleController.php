@@ -94,7 +94,7 @@ class ScheduleController extends BaseController
             $input = $request->all();
             $input['type'] = SCHEDULE_KEY_VALUE;
             $input['date'] = Carbon::createFromFormat('Y-m-d H:i', $request->date);
-            $input['color'] = $request->input('color') ? $request->input('color') : 'COLOR_DEFAULT_VALUE';
+            $input['color'] = $request->input('color') ? $request->input('color') : COLOR_DEFAULT_VALUE;
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
