@@ -108,7 +108,6 @@ class RecordItemController extends BaseController
     public function store(RecordItemRequest $request)
     {
         try {
-
             $request->validated();
             // dd($request->begin);
             $input = $request->all();
@@ -129,6 +128,7 @@ class RecordItemController extends BaseController
 
             $recordItemId = $recordItem->id;
             $file = $request->file('file');
+
             $media = app('App\Http\Controllers\V1\MediaController')->storeMedia($file, $recordItemId);
             // dd($media);
 
@@ -169,14 +169,12 @@ class RecordItemController extends BaseController
             return $this->sendError("Something when wrong!", 500);
         }
     }
-    /**
-     * @param ListRecordItemRequest $request
-     */
-    public function getItem(ListRecordItemRequest $request)
+ 
+    public function getItem($id)
     {
         try {
-            $recordId = $request->record;
-            // dd($recordId = $request->record);
+            $recordId = $id;
+            // dd($recordId);
             $recordItem = $this->recordItemRepository->getItem($recordId);
             if ($recordItem) {
                 return $this->sendResponse($recordItem, 'Get recordItem on day successfully.');
@@ -188,9 +186,6 @@ class RecordItemController extends BaseController
         }
     }
 
-     /**
-     * @param Request $request
-     */
     public function detail($id) 
     {
         try {
