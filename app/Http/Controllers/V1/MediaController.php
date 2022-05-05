@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\V1\MediaRequest;
+use App\Models\RecordItem;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use Carbon\Carbon;
 
@@ -55,4 +56,22 @@ class MediaController extends BaseController
             return $this->sendError("Something when wrong!", 500);
         }
     }
+
+    /**
+     * @param Request $request
+     */
+    public function getMedia($recordItemId)
+    {
+        try {
+            $media = $this->mediaRepository->getMedia($recordItemId);
+            if ($media) {
+                return $this->sendResponse($media, 'Get media successfully.');
+            }
+            return $this->sendError("Not found!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
 }
