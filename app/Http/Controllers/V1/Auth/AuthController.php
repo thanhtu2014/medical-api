@@ -48,12 +48,9 @@ class AuthController extends BaseController
                 //Update tokens
                 $this->userRepository->update($user->id, ['token' => $success_token]);
 
-                //Get user detail with new token generated
-                $userDetail = Auth::user();
-
-                return $this->sendResponseGetToken($userDetail, $success_token, 'User login successfully.');
+                return $this->sendResponseGetToken($user, $success_token, 'User login successfully.');
             } 
-            else{ 
+            else{
                 return $this->sendError(['error'=>'Wrong username or password!'], 401);
             }
         } catch(Exception $error) {
@@ -113,6 +110,8 @@ class AuthController extends BaseController
             $user = $this->userRepository->findBy(['code' => $request->code, 'chg' => CHG_VALID_VALUE]);
 
             if($user) {
+                $user1 = Auth::user();
+                
                 $success_token = $user->createToken('Personal Access Token')->plainTextToken;
 
                 $this->userRepository->update(

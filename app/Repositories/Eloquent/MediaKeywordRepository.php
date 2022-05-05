@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Repositories\BaseRepository;
 use App\Repositories\Interfaces\MediaKeywordRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use App\Models\MediaKeyWord;
+use App\Models\MediaKeyword;
 
 class MediaKeywordRepository extends BaseRepository implements MediaKeywordRepositoryInterface
 {
@@ -19,7 +19,7 @@ class MediaKeywordRepository extends BaseRepository implements MediaKeywordRepos
      *
      * @param Model $model
      */
-    public function __construct(MediaKeyWord $model)
+    public function __construct(MediaKeyword $model)
     {
         $this->model = $model;
     }
