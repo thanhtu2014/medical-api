@@ -107,7 +107,12 @@ class RecordItemController extends BaseController
      */
     public function store(RecordItemRequest $request)
     {
+        dd('aaa');
         try {
+
+            
+
+            dd($request->validated());
 
             $request->validated();
             // dd($request->begin);
