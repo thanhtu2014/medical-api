@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('type');
+            $table->string('type', 24);
             $table->string('name', 128);
             $table->string('color', 6);
             $table->string('user', 128)->nullable()->default(null);
