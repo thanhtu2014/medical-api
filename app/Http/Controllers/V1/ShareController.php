@@ -43,13 +43,14 @@ class ShareController extends BaseController
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
+            $input['to'] = $request->to;
             $input['status'] = $request->to ?  STATUS_ACCEPT_VALUE : STATUS_REQUEST_VALUE;
             $share = $this->shareRepository->create($input);
 
             if($share->to){
                 $email = $share->people->email;
             }
-
+     
             if($share->mail){
                 $email = $share->mail;
             }
@@ -57,7 +58,7 @@ class ShareController extends BaseController
             if($share) {
                 //send mail to email accept
                 Mail::to($email)->send(new NotificationInvite($status));
-
+                
                 if (Mail::failures()) {
                     return $this->sendError('Bad gateway.', ['error'=>'Bad gateway'], 502);
                 }

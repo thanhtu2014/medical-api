@@ -35,6 +35,9 @@ use App\Repositories\Eloquent\RecordItemRepository;
 use App\Repositories\Interfaces\RecordItemRepositoryInterface;
 use App\Repositories\Eloquent\MediaRepository;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
+use App\Repositories\Eloquent\FavoriteRepository;
+use App\Repositories\Interfaces\FavoriteRepositoryInterface;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -122,6 +125,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             MediaRepositoryInterface::class,
             MediaRepository::class
+        );
+
+        $this->app->bind(
+            FavoriteRepositoryInterface::class,
+            FavoriteRepository::class
         );
     }
 

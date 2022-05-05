@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-
-class Record extends Authenticatable
+class Favorite extends Authenticatable
 {
-    protected $table = 'records';
+    protected $table = 'favorites';
+
     public $timestamps = false;
 
     /**
@@ -18,16 +16,8 @@ class Record extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'type',
-        'begin',
-        'end',
-        'title',
-        'hospital',
-        'people',
+        'record',
         'user',
-        'folder',
-        'media',
-        'visible',
         'chg',
         'new_by',
         'new_ts',
@@ -42,7 +32,8 @@ class Record extends Authenticatable
      */
     protected $hidden = [];
 
-    public function favorites(){
-        return $this->hasMany(Favorite::class);
+    public function record(){
+        return $this->belongsTo(Record::class);
     }
+
 }
