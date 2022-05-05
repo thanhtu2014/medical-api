@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\V1\RecordRequest;
+use App\Http\Requests\V1\MediaRequest;
 use App\Repositories\Interfaces\RecordRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,6 +12,25 @@ use Illuminate\Support\Facades\Auth;
 
 class RecordController extends BaseController
 {
+
+    /**
+     * @param Request $request
+     */
+    public function searchRecord(Request $request) 
+    {     
+        try {
+            $recordSearch = $this->recordRepository->Search($request);
+            
+            if($recordSearch) {
+                return $this->sendResponse($recordSearch, 'Search record successfully.');
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
     /**
      * @var RecordRepositoryInterface
      */
@@ -31,27 +51,12 @@ class RecordController extends BaseController
     public function index()
     {
         try {
-            $records = $this->recordRepository->all();
+            $records = $this->recordRepository->allBy([
+                'user' => Auth::user()->id,
+                'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($records, 'Get record list successfully.');
-        } catch (\Exception $e) {
-            throw $e;
-            return $this->sendError("Something when wrong!", 500);
-        }
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function searchRecord(Request $request) 
-    {     
-        try {
-            $recordSearch = $this->recordRepository->Search($request);
-            
-            if($recordSearch) {
-                return $this->sendResponse($recordSearch, 'Search record successfully.');
-            }
-
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
@@ -97,28 +102,71 @@ class RecordController extends BaseController
     }
 
 
+/**
+     *  @param MediaRequest $request
+     */
+    public function import(MediaRequest $request)
+    {
+        try {
+            $request->validated();
+            $input = $request->all();
+            $input['title'] = 'Record Name';
+            $input['type'] = RECORD_DEFAULT_VALUE;
+            $input['begin'] = Carbon::now();
+            $input['end'] = Carbon::now();
+            $input['user'] = Auth::user()->id;
+            $input['visible'] = VISIBLE_VALID_VALUE;
+            $input['chg'] = CHG_VALID_VALUE;
+            $input['new_by'] = Auth::user()->id;
+            $input['new_ts'] = Carbon::now();
+            $input['upd_by'] = Auth::user()->id;
+            $input['upd_ts'] = Carbon::now();
+   
+            $record = $this->recordRepository->create($input);
+            // dd($record);
+
+            $recordId = $record->id;
+            
+            $recordItem = app('App\Http\Controllers\V1\RecordItemController')->storeItem($recordId);
+            //dd($recordItem->getData()->data->id);
+     
+            $recordItemId = $recordItem->getData()->data->id;
+            $file = $request->file('file');
+            $media = app('App\Http\Controllers\V1\MediaController')->storeMedia($file, $recordItemId);
+            // dd($media);
+            $data = ['record' => $record, 'recordItem' => $recordItem->getData()->data->content, 'media' => $media->getData()->data->fpath];
+            if ($record) {
+                return $this->sendResponse($data, 'Import record successfully.');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
     /**
      *  @param RecordRequest $request
      */
-    public function submitRecord(RecordRequest $request)
+    public function save(RecordRequest $request)
     {
         try {
-            $record = $this->recordRepository->findById($request->id);
+            $record = $this->recordRepository->findBy(['id' => $request->id]);
 
             if (!$record) {
                 return $this->sendError("Record not found with ID : $request->id!", 404);
             }
+            
             $request->validated();
             $input['end'] = Carbon::now();
+            $input['visible'] = VISIBLE_VALID_VALUE;
             $input['chg'] = CHG_VALID_VALUE;
-            $input = $request->all();
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $record = $this->recordRepository->update($request->id, $input);
+            $rec = $record->update($input);
 
             if ($record) {
                 return $this->sendResponse($record, 'Update record successfully.');
@@ -136,13 +184,13 @@ class RecordController extends BaseController
     {
         try {
             $record = $this->recordRepository->findById($request->id);
-
             if (!$record) {
                 return $this->sendError("Record not found with ID : $request->id!", 404);
             }
             $request->validated();
-
             $input = $request->all();
+            $input['begin'] = $record->begin;
+            $input['end'] = $record->end;
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
