@@ -99,7 +99,7 @@ class AuthController extends BaseController
             }
 
             DB::commit();
-            return $this->sendResponse([], 'Send Mail successfully.');
+            return $this->sendResponse(['success' => 'true'], 'Send Mail successfully.');
         } catch(Exception $error) {
             DB::rollBack();
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 500);
@@ -135,6 +135,6 @@ class AuthController extends BaseController
     {
         Auth::user()->token()->delete();
         $response = ['message' => 'You have been successfully logged out!'];
-        return $this->sendResponse([], $response, 200);
+        return $this->sendResponse(['success' => 'true'], $response, 200);
     }
 }
