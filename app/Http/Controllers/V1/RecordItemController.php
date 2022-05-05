@@ -18,18 +18,20 @@ class RecordItemController extends BaseController
 {
     /**
      * @var RecordItemRepositoryInterface
-
+     * @var MediaRepositoryInterface
      */
     protected $recordItemRepository;
+    protected $mediaRepository;
 
 
     /**
      * RecordItemController constructor.
      * @param RecordItemRepository $recordItemRepository
      */
-    public function __construct(RecordItemRepositoryInterface $recordItemRepository)
+    public function __construct(RecordItemRepositoryInterface $recordItemRepository, MediaRepositoryInterface $mediaRepository)
     {
         $this->recordItemRepository = $recordItemRepository;
+        $this->mediaRepository = $mediaRepository;
     }
 
     /**
@@ -38,7 +40,9 @@ class RecordItemController extends BaseController
     public function index()
     {
         try {
-            $recordItems = $this->recordItemRepository->all();
+            $recordItems = $this->recordItemRepository->allBy([
+                'chg' => CHG_VALID_VALUE
+            ]);
 
             return $this->sendResponse($recordItems, 'Get recordItem list successfully.');
         } catch (\Exception $e) {
@@ -137,6 +141,34 @@ class RecordItemController extends BaseController
         }
     }
 
+
+    public function storeItem($recordID)
+    {
+        try {
+            $input['record'] = $recordID;
+            $input['type'] = RECORD_DEFAULT_VALUE;
+            $input['begin'] = Carbon::now();
+            $input['end'] = Carbon::now();
+            $input['content'] = 'demo test';
+            $input['chg'] = CHG_VALID_VALUE;
+            $input['new_by'] = Auth::user()->id;
+            $input['new_ts'] = Carbon::now();
+            $input['upd_by'] = Auth::user()->id;
+            $input['upd_ts'] = Carbon::now();
+            // dd($input['begin']);
+
+
+            $recordItem = $this->recordItemRepository->create($input);
+            // dd($recordItem);
+
+            if ($recordItem) {
+                return $this->sendResponse($recordItem, 'Create recordItem successfully.');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
     /**
      * @param ListRecordItemRequest $request
      */
@@ -150,6 +182,26 @@ class RecordItemController extends BaseController
                 return $this->sendResponse($recordItem, 'Get recordItem on day successfully.');
             }
             return $this->sendError("Not found!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+     /**
+     * @param Request $request
+     */
+    public function detail($id) 
+    {
+        try {
+            $recordItem = $this->recordItemRepository->findById($id);
+            $media = $this->mediaRepository->getMedia($id);
+            $data = ['recordItem' => $recordItem, 'media' => $media];
+            if($data) {
+                return $this->sendResponse($data, 'Get recordItem detail successfully.');
+            }
+
+            return $this->sendError("RecordItem not found with ID : $id!", 404);
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);

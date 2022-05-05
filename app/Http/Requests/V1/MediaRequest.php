@@ -24,14 +24,14 @@ class MediaRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'fpath' =>'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac,m4a'
+            'file' =>'nullable|file|mimes:audio/mpeg,mpga,mp3,wav,aac,m4a'
         ];
     }
 
     public function messages()
     {
         return [
-            'fpath.mimes' => 'wrong file extension',
+            'file.mimes' => 'wrong file extension',
         ];
     }
 }

@@ -36,4 +36,9 @@ class MediaRepository extends BaseRepository implements MediaRepositoryInterface
 
         return $all_audios;
     }
+
+    public function getMedia($recordItemId)
+    {
+        return Media::where(['record_item' =>  $recordItemId,  'chg' => CHG_VALID_VALUE])->get();
+    }
 }

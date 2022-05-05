@@ -121,6 +121,9 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/records/{id}', [RecordController::class, 'delete'])->name('records.delete.api');
         Route::get('/records/search', [RecordController::class, 'searchRecord'])->name('accounts.searchRecord.api');
 
+        Route::put('/save-record/{id}', [RecordController::class, 'save'])->name('records.save.api');
+        Route::post('/import', [RecordController::class, 'import'])->name('records.import.api');
+
         //RECORD_ITEM APIs
         Route::get('/record-item', [RecordItemController::class, 'index'])->name('record-item.api');
         Route::post('/record-item', [RecordItemController::class, 'store'])->name('record-item.store.api');

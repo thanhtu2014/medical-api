@@ -24,8 +24,6 @@ class RecordRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'begin' => 'required',
-            'end' => 'required',
             'title' => 'max:128',
             'hospital' => 'nulable|integer',
             'people' => 'nulable|integer',
@@ -37,8 +35,7 @@ class RecordRequest extends BaseAPIRequest
     public function messages()
     {
         return [
-            'begin.required' => 'Begin is required!',
-            'end.required' => 'End is required!',
+           
         ];
     }
 }
