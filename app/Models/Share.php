@@ -37,4 +37,7 @@ class Share extends Authenticatable
     public function people(){
         return $this->belongsTo(People::class, 'to');
     }
+    public function record(){
+        return $this->belongsTo(People::class);
+    }
 }

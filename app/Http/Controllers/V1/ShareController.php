@@ -40,6 +40,7 @@ class ShareController extends BaseController
 
             $input = $request->all();
             $input['user'] = Auth::id();
+            $input['record'] = $request->record;
             $input['new_by'] = Auth::user()->id;
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();

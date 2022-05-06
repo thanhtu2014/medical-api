@@ -118,17 +118,16 @@ class AccountController extends BaseController
             $account = $this->accountRepository->findBy(['code' => $request->code, 'chg' => CHG_VALID_VALUE]);
             
             if($account) {
-                $success =  $account->createToken('Personal Access Token')->plainTextToken;
                 $this->userRepository->update(
                     $account->id);
-                return $this->sendResponseGetToken($account, $success, 'Verify code successfully.');
             }
 
             return $this->sendError(['error'=>'User not found!'], 404);
-        } catch(Exception $error) {
+        } catch(\Exception $error) {
             return $this->sendError(['error'=>'Unauthorised'], 500);
         }
     }
+    
     /**
      *  @param Request $request
      */

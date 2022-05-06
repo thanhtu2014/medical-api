@@ -14,24 +14,6 @@ class RecordController extends BaseController
 {
 
     /**
-     * @param Request $request
-     */
-    public function searchRecord(Request $request) 
-    {     
-        try {
-            $recordSearch = $this->recordRepository->Search($request);
-            
-            if($recordSearch) {
-                return $this->sendResponse($recordSearch, 'Search record successfully.');
-            }
-
-        } catch (\Exception $e) {
-            throw $e;
-            return $this->sendError("Something when wrong!", 500);
-        }
-    }
-
-    /**
      * @var RecordRepositoryInterface
      */
     protected $recordRepository;
@@ -57,6 +39,40 @@ class RecordController extends BaseController
             ]);
 
             return $this->sendResponse($records, 'Get record list successfully.');
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+    public function detail($id) 
+    {
+        try {
+            $record = $this->recordRepository->findById($id);
+
+            if($record) {
+                return $this->sendResponse($record, 'Get record detail successfully.');
+            }
+
+            return $this->sendError("Record not found with ID : $id!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function searchRecord(Request $request) 
+    {     
+        try {
+            $recordSearch = $this->recordRepository->Search($request);
+            
+            if($recordSearch) {
+                return $this->sendResponse($recordSearch, 'Search record successfully.');
+            }
+
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
