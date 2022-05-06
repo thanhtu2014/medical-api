@@ -124,6 +124,8 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::put('/save-record/{id}', [RecordController::class, 'save'])->name('records.save.api');
         Route::post('/import', [RecordController::class, 'import'])->name('records.import.api');
 
+        Route::put('/hideandshow/{id}', [RecordController::class, 'hideAndShow'])->name('records.hideAndShow.api');
+
         //RECORD_ITEM APIs
         Route::get('/record-item', [RecordItemController::class, 'index'])->name('record-item.api');
         Route::post('/record-item', [RecordItemController::class, 'store'])->name('record-item.store.api');
@@ -132,6 +134,7 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/record-item/{id}', [RecordItemController::class, 'delete'])->name('record-item.delete.api');
 
         Route::get('/list-items/{id}', [RecordItemController::class, 'getItem'])->name('record-item.getItem.api');
+        Route::get('/list-items-visible/{id}', [RecordItemController::class, 'getItemVisible'])->name('record-item.getItemVisible.api');
         //MEDIA APIs
         Route::get('/medias', [MediaController::class, 'index'])->name('medias.api');
         Route::post('/medias', [MediaController::class, 'store'])->name('medias.store.api');

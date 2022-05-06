@@ -166,7 +166,7 @@ class RecordController extends BaseController
             $input['upd_by'] = Auth::user()->id;
             $input['upd_ts'] = Carbon::now();
 
-            $rec = $record->update($input);
+            $record->update($input);
 
             if ($record) {
                 return $this->sendResponse($record, 'Update record successfully.');
@@ -223,6 +223,47 @@ class RecordController extends BaseController
             $this->recordRepository->deleteById($request->id);
 
             return $this->sendResponse([], 'Delete record successfully.');
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+    public function hideAndShow($id) 
+    {
+        try {
+            $record = $this->recordRepository->findById($id);
+
+            if (!$record) {
+                return $this->sendError("Record not found with ID : $id!", 404);
+            }
+            $record->visible = $record->visible == VISIBLE_VALID_VALUE ? VISIBLE_INVALID_VALUE: VISIBLE_VALID_VALUE;
+            $record->save();
+                       
+            if($record) {
+                return $this->sendResponse($record, 'Get recordItem detail successfully.');
+            }
+
+            return $this->sendError("RecordItem not found with ID : $id!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function detail($id) 
+    {
+        try {
+            $record = $this->recordRepository->findById($id);
+
+            if($record) {
+                return $this->sendResponse($record, 'Get record detail successfully.');
+            }
+
+            return $this->sendError("Record not found with ID : $id!", 404);
         } catch (\Exception $e) {
             throw $e;
             return $this->sendError("Something when wrong!", 500);
