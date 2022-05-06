@@ -10,6 +10,7 @@ use App\Http\Requests\V1\ListRecordItemRequest;
 
 use App\Repositories\Interfaces\RecordItemRepositoryInterface;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
+use App\Repositories\Interfaces\RecordRepositoryInterface;
 
 use Carbon\Carbon;
 
@@ -19,19 +20,21 @@ class RecordItemController extends BaseController
     /**
      * @var RecordItemRepositoryInterface
      * @var MediaRepositoryInterface
+     * @var RecordRepositoryInterface
      */
-    protected $recordItemRepository;
+    protected $rcordItemRepository;
     protected $mediaRepository;
-
+    protected $recordRepository;
 
     /**
      * RecordItemController constructor.
      * @param RecordItemRepository $recordItemRepository
      */
-    public function __construct(RecordItemRepositoryInterface $recordItemRepository, MediaRepositoryInterface $mediaRepository)
+    public function __construct(RecordItemRepositoryInterface $recordItemRepository, MediaRepositoryInterface $mediaRepository, RecordRepositoryInterface $recordRepository)
     {
         $this->recordItemRepository = $recordItemRepository;
         $this->mediaRepository = $mediaRepository;
+        $this->recordRepository = $recordRepository;
     }
 
     /**
@@ -185,6 +188,29 @@ class RecordItemController extends BaseController
         }
     }
 
+    public function getItemVisible($id)
+    {
+        try {
+            
+            $record = $this->recordRepository->getRecordVisible($id);
+            if ($record->toArray() != null) {
+                $recordItem = $this->recordItemRepository->getItem($id);
+                $data = ['recordItem' => $recordItem];
+            } else{
+                $recordItem = $this->recordItemRepository->getItem($id);
+                $data = ['recordItem' => $recordItem->makeHidden(['begin', 'end'])];
+            }
+            
+            if ($data) {
+                return $this->sendResponse($data, 'Get recordItem on day successfully.');
+            }
+            return $this->sendError("Not found!", 404);
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
+
     public function detail($id) 
     {
         try {
@@ -201,4 +227,6 @@ class RecordItemController extends BaseController
             return $this->sendError("Something when wrong!", 500);
         }
     }
+
+    
 }

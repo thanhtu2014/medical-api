@@ -7,4 +7,6 @@ use Illuminate\Http\Request;
 interface RecordRepositoryInterface extends EloquentRepositoryInterface
 {
     public function Search(Request $request);
+    
+    public function getRecordVisible($id);
 }

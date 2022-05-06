@@ -42,5 +42,8 @@ class RecordRepository extends BaseRepository implements RecordRepositoryInterfa
             
         return $account;
     }
-
+    public function getRecordVisible($id)
+    {
+        return Record::where(['id' =>  $id, 'visible' => VISIBLE_VALID_VALUE ,  'chg' => CHG_VALID_VALUE])->get();
+    }
 }
