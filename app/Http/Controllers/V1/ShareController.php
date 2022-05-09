@@ -77,9 +77,6 @@ class ShareController extends BaseController
         }
     }
 
-    // public function getConfirm(){
-    //     dd('dd');
-    // }
 
     /**
      *  @param Request $request

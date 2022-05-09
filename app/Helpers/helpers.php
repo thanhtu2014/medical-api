@@ -76,12 +76,11 @@ if (!function_exists('generate_status')) {
     function generate_status() 
     {
         do {
-            $status = 'テキストが入りますテキストが入りますテキストが入り
+            $text = 'テキストが入りますテキストが入りますテキストが入り
             ますテキストが入りますテキストが入りますテキストが
             入りますテキストが入りますテキストが入ります';
-        } while (Share::where("status", "=", $status)->first());
+        } while (Share::where("text", "=", $text)->first());
   
-        return $status;
-
+        return $text;
     }
 }

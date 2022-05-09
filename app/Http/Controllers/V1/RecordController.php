@@ -266,23 +266,4 @@ class RecordController extends BaseController
             return $this->sendError("Something when wrong!", 500);
         }
     }
-
-    /**
-     * @param Request $request
-     */
-    public function detail($id) 
-    {
-        try {
-            $record = $this->recordRepository->findById($id);
-
-            if($record) {
-                return $this->sendResponse($record, 'Get record detail successfully.');
-            }
-
-            return $this->sendError("Record not found with ID : $id!", 404);
-        } catch (\Exception $e) {
-            throw $e;
-            return $this->sendError("Something when wrong!", 500);
-        }
-    }
 }
