@@ -14,15 +14,15 @@ class NotificationInvite extends Mailable
     /**
      * @var Share status
      */
-    public $text;
+    public $status;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($text)
+    public function __construct($status)
     {
-        $this->text = $text;
+        $this->status = $status;
     }
 
     /**
