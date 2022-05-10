@@ -151,7 +151,7 @@ class RecordItemController extends BaseController
             $input['type'] = RECORD_DEFAULT_VALUE;
             $input['begin'] = Carbon::now();
             $input['end'] = Carbon::now();
-            $input['content'] = 'demo test';
+            $input['content'] = CONTENT_RECORD_VALUE;
             $input['chg'] = CHG_VALID_VALUE;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();

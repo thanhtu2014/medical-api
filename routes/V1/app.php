@@ -144,6 +144,8 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::get('/medias/{id}', [MediaController::class, 'detail'])->name('medias.detail.api');
         Route::put('/medias/{id}', [MediaController::class, 'update'])->name('medias.update.api');
         Route::delete('/medias/{id}', [MediaController::class, 'delete'])->name('medias.delete.api');
+        Route::post('/create-media', [MediaController::class, 'storeMedia'])->name('medias.storeMedia.api');
+        Route::post('/record-image', [MediaController::class, 'storeImage'])->name('medias.storeImage.api');
 
         //FAVORITE APIs
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.api');
@@ -151,8 +153,6 @@ Route::group(['prefix' => 'v1', 'as' => 'v1.', 'namespace' => 'V1'], function ()
         Route::delete('/favorites/{id}', [FavoriteController::class, 'delete'])->name('favorites.delete.api');
     });
 
-
-    
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });

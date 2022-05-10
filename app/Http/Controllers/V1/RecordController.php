@@ -124,9 +124,11 @@ class RecordController extends BaseController
     public function import(MediaRequest $request)
     {
         try {
+            $file = $request->file('file');
+
             $request->validated();
             $input = $request->all();
-            $input['title'] = 'Record Name';
+            $input['title'] = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);;
             $input['type'] = RECORD_DEFAULT_VALUE;
             $input['begin'] = Carbon::now();
             $input['end'] = Carbon::now();
@@ -147,7 +149,7 @@ class RecordController extends BaseController
             //dd($recordItem->getData()->data->id);
      
             $recordItemId = $recordItem->getData()->data->id;
-            $file = $request->file('file');
+            
             $media = app('App\Http\Controllers\V1\MediaController')->storeMedia($file, $recordItemId);
             // dd($media);
             $data = ['record' => $record, 'recordItem' => $recordItem->getData()->data->content, 'media' => $media->getData()->data->fpath];
@@ -205,8 +207,6 @@ class RecordController extends BaseController
             }
             $request->validated();
             $input = $request->all();
-            $input['begin'] = $record->begin;
-            $input['end'] = $record->end;
             $input['user'] = Auth::user()->id;
             $input['new_by'] = Auth::user()->id;
             $input['new_ts'] = Carbon::now();
@@ -224,6 +224,32 @@ class RecordController extends BaseController
         }
     }
 
+
+
+    public function updateImage($recordId, $mediaId)
+    {
+        try {
+            $record = $this->recordRepository->findById($recordId);
+            if (!$record) {
+                return $this->sendError("Record not found with ID : $recordId", 404);
+            }
+            $input['media'] = $mediaId;
+            $input['user'] = Auth::user()->id;
+            $input['new_by'] = Auth::user()->id;
+            $input['new_ts'] = Carbon::now();
+            $input['upd_by'] = Auth::user()->id;
+            $input['upd_ts'] = Carbon::now();
+
+            $record = $this->recordRepository->update($recordId, $input);
+
+            if ($record) {
+                return $this->sendResponse($record, 'Update record successfully.');
+            }
+        } catch (\Exception $e) {
+            throw $e;
+            return $this->sendError("Something when wrong!", 500);
+        }
+    }
     /**
      *  @param Request $request
      */

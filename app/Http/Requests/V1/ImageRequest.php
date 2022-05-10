@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use App\Http\Requests\BaseAPIRequest;
 
-class MediaRequest extends BaseAPIRequest
+class ImageRequest extends BaseAPIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,16 @@ class MediaRequest extends BaseAPIRequest
     public function rules()
     {
         return [
-            'file' =>'nullable|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav,m4a'
+            'id' => 'required' ,
+            'file' =>'required|mimes:jpg,png,jpeg,gif,svg'
         ];
     }
 
     public function messages()
     {
         return [
+            'id.required' => 'Required',
+            'file.required' => 'Required',
             'file.mimes' => 'wrong file extension',
         ];
     }
